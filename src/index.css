@@ -9,11 +9,12 @@
   color-scheme: light;
 
   --color-base-100: #f9fafb;
+
   --color-base-200: #ffffff;
---color-base-content: #000000;
+  --color-base-content: #000000;
   --color-primary: #00235b;
 
-  --color-secondary: #5d5d74;
+  --color-secondary: #26262d;
 
   --color-success: #10cd8e;
 
