@@ -15,7 +15,7 @@ const About = () => {
             About AssetFlow
           </h2>
           <p className="text-[12px] lg:text-[18px] text-secondary mb-2">
-            AssetVerse is a smart and reliable asset management platform
+            AssetFlow is a smart and reliable asset management platform
             designed to help modern organizations track, organize, and manage
             their company assets with ease. Our goal is to simplify your
             workflow, improve accountability, and ensure your team always stays
@@ -45,7 +45,7 @@ const About = () => {
               </h3>
             </div>
             <p className="text-[12px] lg:text-[18px] text-secondary ">
-              From employee onboarding to asset handover, AssetVerse makes every
+              From employee onboarding to asset handover, AssetFlow makes every
               process faster, clearer, and fully documented.
             </p>
           </div>
@@ -73,7 +73,7 @@ const About = () => {
               </h3>
             </div>
             <p className="text-[12px] lg:text-[18px] text-secondary ">
-              Built with enterprise-grade security, AssetVerse scales as your
+              Built with enterprise-grade security, AssetFlow scales as your
               business grows—perfect for small teams to large corporations.
             </p>
           </div>
