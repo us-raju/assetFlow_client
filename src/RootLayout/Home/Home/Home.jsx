@@ -2,6 +2,7 @@ import React from 'react';
 import Banner from '../Banner/Banner';
 import About from '../About/About';
 import SubscriptionPackage from '../SubcriptionPackage/SubscriptionPackage';
+import Feature from '../Feature/Feature';
 
 
 
@@ -10,6 +11,7 @@ const Home = () => {
     <Banner></Banner>
     <About></About>
     <SubscriptionPackage></SubscriptionPackage>
+    <Feature></Feature>
     </>
 };
 
