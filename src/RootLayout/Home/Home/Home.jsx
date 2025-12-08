@@ -3,6 +3,7 @@ import Banner from '../Banner/Banner';
 import About from '../About/About';
 import SubscriptionPackage from '../SubcriptionPackage/SubscriptionPackage';
 import Feature from '../Feature/Feature';
+import Testimonial from '../Testimonial/Testimonial';
 
 
 
@@ -12,6 +13,7 @@ const Home = () => {
     <About></About>
     <SubscriptionPackage></SubscriptionPackage>
     <Feature></Feature>
+    <Testimonial></Testimonial>
     </>
 };
 

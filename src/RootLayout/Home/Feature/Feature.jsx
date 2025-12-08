@@ -10,7 +10,7 @@ const Feature = () => {
         <h2 className="text-[18px] lg:text-3xl text-primary font-bold mb-10 text-center">
           About AssetFlow
         </h2>
-        <div className="cardContainer grid gird-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="cardContainer grid gird-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-5">
           <div className="mb-2 bg-[#f5f5f5] shadow-[0_20px_50px_rgba(8,112,184,0.3)] py-2 px-3 rounded-[10px] ">
             <div className="flex items-baseline">
               <span className="mr-2 text-primary">
@@ -35,7 +35,7 @@ const Feature = () => {
                 <RiFoldersLine size={20} />
               </span>
               <h3 className="text-[16px] lg:text-[20px] text-primary font-semibold mb-2">
-               Unified Asset Management
+                Unified Asset Management
               </h3>
             </div>
             <div>
