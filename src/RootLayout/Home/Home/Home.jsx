@@ -4,6 +4,7 @@ import About from '../About/About';
 import SubscriptionPackage from '../SubcriptionPackage/SubscriptionPackage';
 import Feature from '../Feature/Feature';
 import Testimonial from '../Testimonial/Testimonial';
+import HowItWork from '../HowItWork/HowItWork';
 
 
 
@@ -14,6 +15,7 @@ const Home = () => {
     <SubscriptionPackage></SubscriptionPackage>
     <Feature></Feature>
     <Testimonial></Testimonial>
+    <HowItWork></HowItWork>
     </>
 };
 

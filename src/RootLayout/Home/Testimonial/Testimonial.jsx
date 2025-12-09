@@ -53,7 +53,7 @@ const Testimonial = () => {
               </div>
               <div>
                 <h3 className="text-[18px] md:text-[20px] text-primary font-medium inline-block">
-                  David Chen
+                  David Chen,
                 </h3>
                 <h3 className="text-[14px] md:text-[16px] text-primary ml-1 inline-block">
                   HR Manager
@@ -79,7 +79,7 @@ const Testimonial = () => {
               </div>
               <div>
                 <h3 className="text-[18px] md:text-[20px] text-primary font-medium inline-block">
-                  Emily Rodriguez
+                  Emily Rodriguez,
                 </h3>
                 <h3 className="text-[14px] md:text-[16px] text-primary ml-1 inline-block">
                   HR Manager
