@@ -5,6 +5,7 @@ import SubscriptionPackage from '../SubcriptionPackage/SubscriptionPackage';
 import Feature from '../Feature/Feature';
 import Testimonial from '../Testimonial/Testimonial';
 import HowItWork from '../HowItWork/HowItWork';
+import Faq from '../FAQ/Faq';
 
 
 
@@ -16,6 +17,7 @@ const Home = () => {
     <Feature></Feature>
     <Testimonial></Testimonial>
     <HowItWork></HowItWork>
+    <Faq></Faq>
     </>
 };
 
