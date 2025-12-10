@@ -19,7 +19,7 @@ const Banner = () => {
           </motion.h1>
 
           <motion.p
-            className="text-[12px] lg:text-2xl text-base-content font-medium"
+            className="text-[12px] lg:text-2xl text-secondary font-medium"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
@@ -29,11 +29,11 @@ const Banner = () => {
           </motion.p>
 
           <div className="mt-5 flex flex-col  lg:flex-row sm:w-[150px] lg:w-full">
-            <button className="border border-secondary mb-3 lg:mb-0 lg:mr-5 py-1 px-2 lg:py-2 lg:px-4  rounded-[10px] text-[12px] lg:text-[18px] font-medium hover:bg-primary hover:text-base-200 cursor-pointer">
+            <button className="border border-secondary mb-3 lg:mb-0 lg:mr-5 py-1 px-2 lg:py-2 lg:px-4  rounded-[10px] text-[12px] text-primary lg:text-[18px] font-medium hover:bg-primary hover:text-base-200 rsor-pointer">
               Get Started
             </button>
        
-            <button className="border border-secondary py-1 px-2 lg:py-2 lg:px-4 rounded-[10px] text-[12px] lg:text-[18px] font-medium hover:bg-primary hover:text-base-200 cursor-pointer">
+            <button className="border border-secondary py-1 px-2 lg:py-2 lg:px-4 rounded-[10px] text-[12px] text-primary lg:text-[18px] font-medium hover:bg-primary hover:text-base-200  cursor-pointer">
               View Pricing
             </button>
           </div>

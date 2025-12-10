@@ -55,7 +55,7 @@ const Faq = () => {
     {
       question: " How do employees request an asset?",
       answer: (
-        <p className="text-gray-600 mt-3">
+        <p className="mt-3">
           Employees log in and fill a simple form with asset type andreason. The
           request goes to the Admin/HR dashboard for approval.
         </p>
@@ -64,7 +64,7 @@ const Faq = () => {
     {
       question: " How do admins approve or reject requests?",
       answer: (
-        <p className="text-gray-600 mt-3">
+        <p className="mt-3">
           {" "}
           Admins review pending requests, check asset availability, and manually
           approve or reject with a single click.
@@ -74,7 +74,7 @@ const Faq = () => {
     {
       question: "Can we track which employee is using which asset?",
       answer: (
-        <p className="text-gray-600 mt-3">
+        <p className="mt-3">
           Yes, Once an asset is assigned, the system logs who is using it and
           updates the asset’s status automatically.
         </p>
@@ -83,7 +83,7 @@ const Faq = () => {
     {
       question: " Is there a limit to how many assets we can add?",
       answer: (
-        <p className="text-gray-600 mt-3">
+        <p className="mt-3">
           No. You can add unlimited assets and categorize them by department,
           type, or location.
         </p>
@@ -92,7 +92,7 @@ const Faq = () => {
     {
       question: "Can we update or replace an assigned asset?",
       answer: (
-        <p className="text-gray-600 mt-3">
+        <p className="mt-3">
           Yes, admins can update asset details, reassign items, mark them for
           repair, or replace them with new ones.
         </p>
@@ -101,7 +101,7 @@ const Faq = () => {
     {
       question: "What happens when an employee leaves the company?",
       answer: (
-        <p className="text-gray-600 mt-3">
+        <p className="mt-3">
           Admins can mark the employee as inactive and reassign or return all
           previously issued assets back to inventory.
         </p>
@@ -110,7 +110,7 @@ const Faq = () => {
     {
       question: "Is the data secure?",
       answer: (
-        <p className="text-gray-600 mt-3">
+        <p className="mt-3">
           Yes. All asset records, user accounts, and activity logs follow secure
           authentication and authorization rules to protect company data.
         </p>
@@ -129,10 +129,12 @@ const Faq = () => {
             <div
               key={index}
               onClick={() => toggleFAQ(index)}
-              className="border-b py-4 cursor-pointer"
+              className="border-b border-secondary py-4 cursor-pointer"
             >
               <button className="flex justify-between w-full text-left cursor-pointer">
-                <span className="text-lg text-primary font-semibold">{faq.question}</span>
+                <span className="text-lg text-primary font-semibold">
+                  {faq.question}
+                </span>
                 <span className="text-xl">
                   {openIndex === index ? <IoIosArrowUp /> : <IoIosArrowDown />}
                 </span>
@@ -147,7 +149,7 @@ const Faq = () => {
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="overflow-hidden"
                   >
-                    <div>{faq.answer}</div>
+                    <div className="text-secondary">{faq.answer}</div>
                   </motion.div>
                 )}
               </AnimatePresence>

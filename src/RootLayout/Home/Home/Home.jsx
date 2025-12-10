@@ -6,6 +6,7 @@ import Feature from '../Feature/Feature';
 import Testimonial from '../Testimonial/Testimonial';
 import HowItWork from '../HowItWork/HowItWork';
 import Faq from '../FAQ/Faq';
+import Contact from '../ContactCTA/Contact';
 
 
 
@@ -18,6 +19,7 @@ const Home = () => {
     <Testimonial></Testimonial>
     <HowItWork></HowItWork>
     <Faq></Faq>
+    <Contact></Contact>
     </>
 };
 
