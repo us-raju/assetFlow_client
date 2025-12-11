@@ -10,9 +10,6 @@ const HrRegister = () => {
             Registration
           </h2>
           <fieldset className="fieldset">
-            <h3 className="text-[16px] md:text-[18px] text-primary font-semibold">
-              Personal Information
-            </h3>
             {/* Name  */}
             <label className="label text-primary font-semibold">
               Full Name*
@@ -22,29 +19,7 @@ const HrRegister = () => {
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               placeholder="Full Name"
             />
-
-            {/* Email  */}
-            <label className="label text-primary font-semibold">Email*</label>
-            <input
-              type="email"
-              className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
-              placeholder="Email"
-            />
-            {/* Photo url  */}
-            <label className="label text-primary font-semibold">
-              Photo URL
-            </label>
-            <input
-              type="url"
-              className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
-              placeholder="Photo URL(Optional)"
-            />
-
-            {/* company info  */}
-            <h3 className="text-[16px] md:text-[18px] text-primary font-semibold">
-              Company Information
-            </h3>
-
+            {/* Company Name  */}
             <label className="label text-primary font-semibold">
               Company Name*
             </label>
@@ -53,56 +28,82 @@ const HrRegister = () => {
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               placeholder="Company Name"
             />
-
+            {/* Company logo url  */}
             <label className="label text-primary font-semibold">
               Company Logo*
             </label>
             <input
-              type="file"
-              className="file-input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
+              type="url"
+              className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
+              placeholder="Company Logo (URL)"
             />
-
-            <label className="label text-primary font-semibold">
-              Company Email*
-            </label>
+            {/* Email  */}
+            <label className="label text-primary font-semibold">Email*</label>
             <input
               type="email"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
-              placeholder="Company Email"
+              placeholder="Email"
             />
+            {/* date of birth  */}
             <label className="label text-primary font-semibold">
-              Company Address
+              Date of Birth*
             </label>
             <input
-              type="text"
+              type="date"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
-              placeholder="Company Address(Optional)"
-            />
-
-            <label className="label text-primary font-semibold">
-              Company Website Link
-            </label>
-            <input
-              type="text"
-              className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
-              placeholder="Company Website Link (Optional)"
+              placeholder="Password"
             />
             {/* password  */}
 
-            <label className="label text-primary font-semibold">Password*</label>
+            <label className="label text-primary font-semibold">
+              Password*
+            </label>
             <input
               type="password"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               placeholder="Password"
             />
 
+            {/* Role  */}
             <label className="label text-primary font-semibold">
-              Confirm Password*
+              Role
             </label>
             <input
-              type="password"
+              type="text"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
-              placeholder="Confirm Password"
+              readOnly
+              value="hr"
+            />
+
+            {/* package limit  */}
+            <label className="label text-primary font-semibold">
+                Package Limit
+            </label>
+            <input
+              type="number"
+              className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
+              readOnly
+              value="5"
+            />
+              {/* currentEmployees */}
+            <label className="label text-primary font-semibold">
+                 Current Employees
+            </label>
+            <input
+              type="number"
+              className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
+              readOnly
+              value="0"
+            />
+            {/* subscription */}
+                <label className="label text-primary font-semibold">
+              Subscription*
+            </label>
+            <input
+              type="text"
+              className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
+              readOnly
+              value="Basic"
             />
 
             <button

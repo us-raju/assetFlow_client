@@ -5,6 +5,8 @@ import AuthLayout from "../Layouts/AuthLayout/AuthLayout";
 import HrRegister from "../Layouts/AuthLayout/HR_Register/HrRegister";
 import EmployeeRegister from "../Layouts/AuthLayout/employeeRegister/EmployeeRegister";
 import Login from "../Layouts/AuthLayout/Login/Login";
+import HR_Dashbord from "../Layouts/DashbordLayout/HR_Dashbord/HR_Dashbord";
+import Employee_Dashbord from "../Layouts/DashbordLayout/Employee_Dashbord/Employee_Dashbord";
 
 
 const router = createBrowserRouter([
@@ -35,7 +37,15 @@ const router = createBrowserRouter([
         element:<Login></Login>
       }
     ]
-  }
+  },
+{
+  path:"/hr_dashbord",
+  Component:HR_Dashbord
+},
+{
+  path:"/employee_dashbord",
+  Component:Employee_Dashbord
+},
 ]);
 
 

@@ -19,7 +19,7 @@ const EmployeeRegister = () => {
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               placeholder="Full Name"
             />
-           
+
             {/* Email  */}
             <label className="label text-primary font-semibold">Email*</label>
             <input
@@ -27,31 +27,32 @@ const EmployeeRegister = () => {
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               placeholder="Email"
             />
-            {/* Photo url  */}
+            {/* Role  */}
+            <label className="label text-primary font-semibold">Role</label>
+            <input
+              type="text"
+              className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
+              readOnly
+              value="Employee"
+            />
+            {/* date of birth  */}
             <label className="label text-primary font-semibold">
-              Photo URL
+              Date of Birth
             </label>
             <input
-              type="url"
+              type="date"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
-              placeholder="Photo URL(Optional)"
+             
             />
             {/* password  */}
 
-            <label className="label text-primary font-semibold">Password*</label>
+            <label className="label text-primary font-semibold">
+              Password*
+            </label>
             <input
               type="password"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               placeholder="Password"
-            />
-
-            <label className="label text-primary font-semibold">
-              Confirm Password*
-            </label>
-            <input
-              type="password"
-              className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
-              placeholder="Confirm Password"
             />
 
             <button
@@ -60,7 +61,7 @@ const EmployeeRegister = () => {
             >
               Registration
             </button>
-              <p className="text-primary font-semibold text-center mt-2">OR</p>
+            <p className="text-primary font-semibold text-center mt-2">OR</p>
             <button
               type="submit"
               className="btn text-primary border-secondary bg-transparent hover:text-base-200 hover:bg-primary  mt-4"
@@ -94,7 +95,12 @@ const EmployeeRegister = () => {
               </svg>
               Login with Google
             </button>
-            <p className="text-secondary">Already have an account?<Link to="/login" className="text-blue-400">Login</Link></p>
+            <p className="text-secondary">
+              Already have an account?
+              <Link to="/login" className="text-blue-400">
+                Login
+              </Link>
+            </p>
           </fieldset>
         </form>
       </section>
