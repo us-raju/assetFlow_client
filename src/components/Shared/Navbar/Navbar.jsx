@@ -9,11 +9,11 @@ const Navbar = () => {
         <Link to="/">Home</Link>
       </li>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
-        <Link to="/employeeRegiester">Join as Employee</Link>
+        <Link to="/employeeRegister">Join as Employee</Link>
       </li>
 
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
-        <Link to="/hrRegiester">Join as HR Manager </Link>
+        <Link to="/hrRegister">Join as HR Manager </Link>
       </li>
     </>
   );

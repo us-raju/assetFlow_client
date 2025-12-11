@@ -1,7 +1,7 @@
 import React from "react";
-import testimonialImg1 from "../../../assets/testimonial1.jpg";
-import testimonialImg2 from "../../../assets/testimonial2.jpg";
-import testimonialImg3 from "../../../assets/testimonial3.jpg";
+import testimonialImg1 from "../../../../assets/testimonial1.jpg";
+import testimonialImg2 from "../../../../assets/testimonial2.jpg";
+import testimonialImg3 from "../../../../assets/testimonial3.jpg";
 import { motion } from "framer-motion";
 
 const Testimonial = () => {

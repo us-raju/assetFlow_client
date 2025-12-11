@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import useAxios from "../../../Hooks/useAxios";
 import { FaRegArrowAltCircleRight, FaRegCheckCircle } from "react-icons/fa";
-import Loading from "../../../components/Loading/Loading";
+import Loading from "../../../../components/Loading/Loading";
+import useAxios from "../../../../Hooks/useAxios";
 
 const SubscriptionPackage = () => {
   const [subPackage, setSubPackage] = useState();

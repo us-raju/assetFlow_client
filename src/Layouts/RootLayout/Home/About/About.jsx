@@ -1,5 +1,5 @@
 import React from "react";
-import aboutImg from "../../../assets/about_img.png";
+import aboutImg from "../../../../assets/about_img.png";
 import { FcBarChart, FcOpenedFolder } from "react-icons/fc";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosUnlock } from "react-icons/io";

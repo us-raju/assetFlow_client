@@ -1,5 +1,5 @@
 import React from "react";
-import bannerImg from "../../../assets/heroImgresize.jpg";
+import bannerImg from "../../../../assets/heroImgresize.jpg";
 import { easeInOut, motion } from "framer-motion";
 const Banner = () => {
   return (
