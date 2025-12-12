@@ -1,0 +1,93 @@
+import React from "react";
+import { FaRegUserCircle } from "react-icons/fa";
+import { HiOutlineClipboardList } from "react-icons/hi";
+import { LiaUsersSolid } from "react-icons/lia";
+import { RxFilePlus } from "react-icons/rx";
+import { TbArrowBigUpLines } from "react-icons/tb";
+import { Link } from "react-router";
+const AssetList = () => {
+  return (
+    <>
+      <div>
+        <div className="mb-5">
+          <label className="input border border-secondary outline-primary rounded-[10px]">
+            <svg
+              className="h-[1em] opacity-50"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <g
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                strokeWidth="2.5"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </g>
+            </svg>
+            <input
+              type="search"
+              className="text-secondary  placeholder:text-secondary"
+              required
+              placeholder="Search"
+            />
+          </label>
+        </div>
+        <div className="table_Container">
+          <div className="overflow-x-auto">
+            <table className="table">
+              {/* head */}
+              <thead className="text-primary text-[12px] md:text-[16px]">
+                <tr>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Quantity</th>
+                  <th>Date Added</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody className="text-[12px] md:text-[16px]">
+                {/* row 1 */}
+                <tr className="text-secondary">
+                  <th>
+                    <div className="avatar">
+                      <div className="mask mask-squircle h-12 w-12">
+                        <img
+                          src="https://img.daisyui.com/images/profile/demo/2@94.webp"
+                          alt="Avatar Tailwind CSS Component"
+                        />
+                      </div>
+                    </div>
+                  </th>
+                  <td>
+                    <div className="flex items-center">
+                      <div>
+                        <div className="font-bold">Dells</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Returnable</td>
+                  <td>10</td>
+                  <td>10/12/2025</td>
+                  <td>
+                    <button className="btn border-secondary bg-transparent hover:bg-primary hover:text-base-200 duration-200 btn-xs sm:mr-2 mb-2 sm:mb-0">
+                      Edit
+                    </button>
+                    <button className="btn btn-ghost btn-xs border-secondary bg-transparent hover:bg-primary hover:text-base-200 duration-200">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default AssetList;

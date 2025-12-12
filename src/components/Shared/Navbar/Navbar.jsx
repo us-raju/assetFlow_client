@@ -20,19 +20,19 @@ const Navbar = () => {
   const HrdrowdownLinks = (
     <>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
-        <Link to="/">Asset List</Link>
+        <Link to="/hr_dashbord/assetList">Asset List</Link>
       </li>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
-        <Link to="/">Add Asset</Link>
+        <Link to="/hr_dashbord/addAsset">Add Asset</Link>
       </li>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
-        <Link to="/">All Requests</Link>
+        <Link to="/hr_dashbord/allRequest">All Requests</Link>
       </li>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
-        <Link to="/">Employee List</Link>
+        <Link to="/hr_dashbord/myEmployeeList">Employee List</Link>
       </li>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
-        <Link to="/">Profile</Link>
+        <Link to="/hr_dashbord/profile">Profile</Link>
       </li>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
         <button>Logout</button>
