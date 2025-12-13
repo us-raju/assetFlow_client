@@ -1,10 +1,5 @@
 import React from "react";
-import { FaRegUserCircle } from "react-icons/fa";
-import { HiOutlineClipboardList } from "react-icons/hi";
-import { LiaUsersSolid } from "react-icons/lia";
-import { RxFilePlus } from "react-icons/rx";
-import { TbArrowBigUpLines } from "react-icons/tb";
-import { Link } from "react-router";
+
 const AssetList = () => {
   return (
     <>
