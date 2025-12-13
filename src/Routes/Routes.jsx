@@ -13,6 +13,11 @@ import AllRequest from "../Layouts/DashbordLayout/HR_Dashbord/hrDashbordPages/Al
 import MyEmployeeList from "../Layouts/DashbordLayout/HR_Dashbord/hrDashbordPages/MyEmployeeList";
 import UpgradePackage from "../Layouts/DashbordLayout/HR_Dashbord/hrDashbordPages/UpgradePackage";
 import Profile from "../Layouts/DashbordLayout/HR_Dashbord/hrDashbordPages/Profile";
+import MyAsset from "../Layouts/DashbordLayout/Employee_Dashbord/EmployeeDashbordPage/MyAsset";
+import RequestAsset from "../Layouts/DashbordLayout/Employee_Dashbord/EmployeeDashbordPage/RequestAsset";
+import MyTeam from "../Layouts/DashbordLayout/Employee_Dashbord/EmployeeDashbordPage/MyTeam";
+import EmProfile from "../Layouts/DashbordLayout/Employee_Dashbord/EmployeeDashbordPage/EmProfile";
+
 
 
 const router = createBrowserRouter([
@@ -76,7 +81,29 @@ const router = createBrowserRouter([
 },
 {
   path:"/employee_dashbord",
-  Component:Employee_Dashbord
+  Component:Employee_Dashbord,
+  children:[
+    {
+
+      path:"/employee_dashbord/myasset",
+      element:<MyAsset></MyAsset>
+    },
+    {
+
+      path:"/employee_dashbord/requsetasset",
+      element:<RequestAsset></RequestAsset>
+    },
+    {
+
+      path:"/employee_dashbord/myteam",
+      element:<MyTeam></MyTeam>
+    },
+    {
+
+      path:"/employee_dashbord/emprofile",
+      element:<EmProfile></EmProfile>
+    },
+  ]
 },
 ]);
 

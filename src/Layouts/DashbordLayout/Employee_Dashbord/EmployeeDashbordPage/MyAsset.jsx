@@ -1,11 +1,15 @@
 import React from "react";
 
-const AssetList = () => {
+const MyAsset = () => {
   return (
     <>
       <section>
-        <div className="mb-5">
-          <label className="input border border-secondary outline-primary rounded-[10px]">
+        <h2 className="text-[18px] lg:text-3xl text-primary font-bold mb-5 text-center">
+          My Asset
+        </h2>
+
+        <div className="mb-5 flex items-center justify-between">
+          <label className="input border border-secondary outline-primary rounded-[10px]  mr-2 md:mr-0">
             <svg
               className="h-[1em] opacity-50"
               xmlns="http://www.w3.org/2000/svg"
@@ -29,6 +33,11 @@ const AssetList = () => {
               placeholder="Search"
             />
           </label>
+          <select defaultValue="" className="select input border border-secondary outline-primary rounded-[10px]  mr-2 md:mr-0">
+            <option value="" disabled>Asset Type</option>
+            <option value="returnable">Returnable</option>
+            <option value="non-returnable">Non-Returnable</option>
+          </select>
         </div>
         <div className="table_Container">
           <div className="overflow-x-auto">
@@ -39,9 +48,11 @@ const AssetList = () => {
                   <th>Image</th>
                   <th>Name</th>
                   <th>Type</th>
-                  <th>Quantity</th>
-                  <th>Date Added</th>
-                  <th>Actions</th>
+                  <th>Company Name</th>
+                  <th>Request Date</th>
+                  <th>Approval Date</th>
+                  <th>Status</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody className="text-[12px] md:text-[16px]">
@@ -65,14 +76,13 @@ const AssetList = () => {
                     </div>
                   </td>
                   <td>Returnable</td>
-                  <td>10</td>
+                  <td>ACB CORP</td>
                   <td>10/12/2025</td>
+                  <td>10/12/2025</td>
+                  <td className="text-success">Approved</td>
                   <td>
                     <button className="btn border-secondary bg-transparent hover:bg-primary hover:text-base-200 duration-200 btn-xs sm:mr-2 mb-2 sm:mb-0">
-                      Edit
-                    </button>
-                    <button className="btn btn-ghost btn-xs border-secondary bg-transparent hover:bg-primary hover:text-base-200 duration-200">
-                      Delete
+                      Return
                     </button>
                   </td>
                 </tr>
@@ -85,4 +95,4 @@ const AssetList = () => {
   );
 };
 
-export default AssetList;
+export default MyAsset;
