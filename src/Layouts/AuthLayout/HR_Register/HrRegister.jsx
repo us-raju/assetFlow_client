@@ -1,11 +1,87 @@
-import React from "react";
-import { Link } from "react-router";
-
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, Navigate, useNavigate } from "react-router";
+import useAuth from "../../../Hooks/useAuth";
+import Swal from "sweetalert2";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 const HrRegister = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const { signUp, setUser, updateUserProfile, user } = useAuth();
+  const handleHrRegistation = (data) => {
+    console.log(data);
+    const displayName = data.fullName;
+    const email = data.email;
+    const role = data.role;
+    const companyName = data.companyName;
+    const companyLogo = data.companyLogo;
+    const packageLimit = data.packageLimit;
+    const currentEmployees = data.currentEmployees;
+    const subscription = data.subscription;
+    const dateOfBirth = data.dateOfBirth;
+    const profileImage = data.ProfileImage;
+
+    signUp(data.email, data.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        setUser(user);
+        updateUserProfile({
+          displayName: displayName,
+          email: email,
+          role: role,
+          companyName: companyName,
+          companyLogo: companyLogo,
+          packageLimit: packageLimit,
+          currentEmployees: currentEmployees,
+          subscription: subscription,
+          dateOfBirth: dateOfBirth,
+          profileImage: profileImage,
+        }).then(() => {
+          setUser({
+            ...user,
+            displayName: displayName,
+            email: email,
+            role: role,
+            companyName: companyName,
+            companyLogo: companyLogo,
+            packageLimit: packageLimit,
+            currentEmployees: currentEmployees,
+            subscription: subscription,
+            dateOfBirth: dateOfBirth,
+            profileImage: profileImage,
+          });
+        });
+        Swal.fire({
+          title: "Registration",
+          icon: "success",
+          position: "top-start",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate("/hr_dashbord")
+        
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        Swal.fire({
+          title: errorMessage,
+          icon: "error",
+          draggable: false,
+        });
+      });
+  };
   return (
     <>
       <section className="mt-10">
-        <form className="bg-[#f5f5f5] shadow-[0_20px_50px_rgba(8,112,184,0.3)] max-w-lg p-5 mx-auto rounded-[10px]">
+        <form
+          onSubmit={handleSubmit(handleHrRegistation)}
+          className="bg-[#f5f5f5] shadow-[0_20px_50px_rgba(8,112,184,0.3)] max-w-lg p-5 mx-auto rounded-[10px]"
+        >
           <h2 className="text-[18px] lg:text-3xl text-primary font-bold mb-2 text-center">
             Registration
           </h2>
@@ -15,6 +91,7 @@ const HrRegister = () => {
               Full Name*
             </label>
             <input
+              {...register("fullName", { required: true })}
               type="text"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               placeholder="Full Name"
@@ -24,15 +101,27 @@ const HrRegister = () => {
               Company Name*
             </label>
             <input
+              {...register("companyName", { required: true })}
               type="text"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               placeholder="Company Name"
+            />
+            {/* Profile Image url  */}
+            <label className="label text-primary font-semibold">
+              Profile Image*
+            </label>
+            <input
+              {...register("ProfileImage", { required: true })}
+              type="url"
+              className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
+              placeholder="Profile Image (URL)"
             />
             {/* Company logo url  */}
             <label className="label text-primary font-semibold">
               Company Logo*
             </label>
             <input
+              {...register("companyLogo", { required: true })}
               type="url"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               placeholder="Company Logo (URL)"
@@ -40,6 +129,7 @@ const HrRegister = () => {
             {/* Email  */}
             <label className="label text-primary font-semibold">Email*</label>
             <input
+              {...register("email", { required: true })}
               type="email"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               placeholder="Email"
@@ -49,26 +139,59 @@ const HrRegister = () => {
               Date of Birth*
             </label>
             <input
+              {...register("dateOfBirth", { required: true })}
               type="date"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               placeholder="Password"
             />
             {/* password  */}
-
-            <label className="label text-primary font-semibold">
-              Password*
-            </label>
-            <input
-              type="password"
-              className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
-              placeholder="Password"
-            />
+            <div className="relative">
+              <label className="label text-primary font-semibold">
+                Password*
+              </label>
+              <input
+                {...register("password", {
+                  required: true,
+                  minLength: 6,
+                  pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
+                })}
+                type={showPassword ? "text" : "password"}
+                className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full pr-8"
+                placeholder="Password"
+              />
+              <span className="absolute top-7 right-2 cursor-pointer z-30">
+                {showPassword ? (
+                  <IoEyeOutline
+                    onClick={() => setShowPassword(false)}
+                    size={20}
+                  />
+                ) : (
+                  <IoEyeOffOutline
+                    onClick={() => setShowPassword(true)}
+                    size={20}
+                  />
+                )}
+              </span>
+              {errors.password?.type === "required" && (
+                <p className="text-warning">Password is required</p>
+              )}
+              {errors.password?.type === "minLength" && (
+                <p className="text-warning">
+                  Password must be at least 6 characters long
+                </p>
+              )}
+              {errors.password?.type === "pattern" && (
+                <p className="text-warning">
+                  Password must include at least one uppercase letter, one
+                  lowercase letter, one number, and one special character
+                </p>
+              )}
+            </div>
 
             {/* Role  */}
-            <label className="label text-primary font-semibold">
-              Role
-            </label>
+            <label className="label text-primary font-semibold">Role</label>
             <input
+              {...register("role")}
               type="text"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               readOnly
@@ -77,29 +200,32 @@ const HrRegister = () => {
 
             {/* package limit  */}
             <label className="label text-primary font-semibold">
-                Package Limit
+              Package Limit
             </label>
             <input
+              {...register("packageLimit")}
               type="number"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               readOnly
-              value="5"
+              defaultValue="5"
             />
-              {/* currentEmployees */}
+            {/* currentEmployees */}
             <label className="label text-primary font-semibold">
-                 Current Employees
+              Current Employees
             </label>
             <input
+              {...register("currentEmployees")}
               type="number"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               readOnly
-              value="0"
+              defaultValue="0"
             />
             {/* subscription */}
-                <label className="label text-primary font-semibold">
-              Subscription*
+            <label className="label text-primary font-semibold">
+              Subscription
             </label>
             <input
+              {...register("subscription")}
               type="text"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               readOnly

@@ -17,95 +17,93 @@ import MyAsset from "../Layouts/DashbordLayout/Employee_Dashbord/EmployeeDashbor
 import RequestAsset from "../Layouts/DashbordLayout/Employee_Dashbord/EmployeeDashbordPage/RequestAsset";
 import MyTeam from "../Layouts/DashbordLayout/Employee_Dashbord/EmployeeDashbordPage/MyTeam";
 import EmProfile from "../Layouts/DashbordLayout/Employee_Dashbord/EmployeeDashbordPage/EmProfile";
-
-
+import PrivateRoute from "../Provider/PrivateRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    Component:RootLayout,
-    children:[
-        {
-            index:true,
-            Component:Home
-        }
-    ]
+    Component: RootLayout,
+    children: [
+      {
+        index: true,
+        Component: Home,
+      },
+    ],
   },
   {
-    path:"/",
-    Component:AuthLayout,
-    children:[
+    path: "/",
+    Component: AuthLayout,
+    children: [
       {
-        path:"/hrRegister",
-        element:<HrRegister></HrRegister>
+        path: "/hrRegister",
+        element: <HrRegister></HrRegister>,
       },
       {
-        path:"/employeeRegister",
-        element:<EmployeeRegister></EmployeeRegister>
+        path: "/employeeRegister",
+        element: <EmployeeRegister></EmployeeRegister>,
       },
       {
-        path:"/login",
-        element:<Login></Login>
-      }
-    ]
+        path: "/login",
+        element: <Login></Login>,
+      },
+    ],
   },
-{
-  path:"/hr_dashbord",
-  Component:HR_Dashbord,
-  children:[
-    {
-      path:"/hr_dashbord/assetList",
-      element:<AssetList></AssetList>
-    },
-    {
-      path:"/hr_dashbord/addAsset",
-      element:<AddAsset></AddAsset>
-    },
-    {
-      path:"/hr_dashbord/allRequest",
-      element:<AllRequest></AllRequest>
-    },
-    {
-      path:"/hr_dashbord/myEmployeeList",
-      element:<MyEmployeeList></MyEmployeeList>
-    },
-    {
-      path:"/hr_dashbord/upgradePackage",
-      element:<UpgradePackage></UpgradePackage>
-    },
-    {
-      path:"/hr_dashbord/profile",
-      element:<Profile></Profile>
-    },
-  ]
-},
-{
-  path:"/employee_dashbord",
-  Component:Employee_Dashbord,
-  children:[
-    {
-
-      path:"/employee_dashbord/myasset",
-      element:<MyAsset></MyAsset>
-    },
-    {
-
-      path:"/employee_dashbord/requsetasset",
-      element:<RequestAsset></RequestAsset>
-    },
-    {
-
-      path:"/employee_dashbord/myteam",
-      element:<MyTeam></MyTeam>
-    },
-    {
-
-      path:"/employee_dashbord/emprofile",
-      element:<EmProfile></EmProfile>
-    },
-  ]
-},
+  {
+    path: "/hr_dashbord",
+    element: (
+      <PrivateRoute>
+        <HR_Dashbord></HR_Dashbord>
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path: "/hr_dashbord",
+        element: <AssetList></AssetList>,
+      },
+      {
+        path: "/hr_dashbord/addAsset",
+        element: <AddAsset></AddAsset>,
+      },
+      {
+        path: "/hr_dashbord/allRequest",
+        element: <AllRequest></AllRequest>,
+      },
+      {
+        path: "/hr_dashbord/myEmployeeList",
+        element: <MyEmployeeList></MyEmployeeList>,
+      },
+      {
+        path: "/hr_dashbord/upgradePackage",
+        element: <UpgradePackage></UpgradePackage>,
+      },
+      {
+        path: "/hr_dashbord/profile",
+        element: <Profile></Profile>,
+      },
+    ],
+  },
+  {
+    path: "/employee_dashbord",
+    Component: Employee_Dashbord,
+    children: [
+      {
+        path: "/employee_dashbord/myasset",
+        element: <MyAsset></MyAsset>,
+      },
+      {
+        path: "/employee_dashbord/requsetasset",
+        element: <RequestAsset></RequestAsset>,
+      },
+      {
+        path: "/employee_dashbord/myteam",
+        element: <MyTeam></MyTeam>,
+      },
+      {
+        path: "/employee_dashbord/emprofile",
+        element: <EmProfile></EmProfile>,
+      },
+    ],
+  },
 ]);
 
-
-export default router
+export default router;

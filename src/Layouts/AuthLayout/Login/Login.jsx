@@ -11,7 +11,7 @@ const Login = () => {
         <div className="">
           <form className="bg-[#f5f5f5] shadow-[0_20px_50px_rgba(8,112,184,0.3)] max-w-lg p-5 rounded-[10px] mx-auto relative">
             <h2 className="text-[18px] lg:text-3xl text-primary font-bold mb-2 text-center">
-              Registration
+              Login
             </h2>
             <fieldset className="fieldset">
               <label className="label text-primary font-semibold">Email*</label>

@@ -1,8 +1,31 @@
 import React from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 import { Link } from "react-router";
+import useAuth from "../../../Hooks/useAuth";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
+  const { user, loading, LogOut } = useAuth();
+  const handleHrLogOut = () => {
+    LogOut()
+      .then(() => {
+        Swal.fire({
+          title: "LogOut Successfull",
+          icon: "success",
+          position: "top-start",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        Swal.fire({
+          title: errorMessage,
+          icon: "error",
+          draggable: false,
+        });
+      });
+  };
   const links = (
     <>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
@@ -35,7 +58,9 @@ const Navbar = () => {
         <Link to="/hr_dashbord/profile">Profile</Link>
       </li>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
-        <button>Logout</button>
+        <button onClick={handleHrLogOut} type="button">
+          Logout
+        </button>
       </li>
     </>
   );
@@ -123,12 +148,15 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         <div className="w-[45px] h-[45px]">
-          {/* <img src="" alt="" /> */}
-          <Link to="/profile">
+          {user ? (
+            <Link to="/Profile">
+              <img className="w-full h-full rounded-full" src={user.companyLogo} alt="" />
+            </Link>
+          ) : (
             <span className="w-full h-full">
               <FaRegUserCircle size={45} />
             </span>
-          </Link>
+          )}
         </div>
       </div>
     </div>
