@@ -60,7 +60,7 @@ const DashbordNav = () => {
               {/* List item */}
               <li>
                 <Link
-                  to="/employee_dashbord/myasset"
+                  to="/employee_dashbord"
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                   data-tip="My Asset"
                 >

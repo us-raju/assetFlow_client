@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 const Loading = () => {
   return (
-    <div className="w-[300px] flex justify-center items-center bg-gray-200 h-2 rounded overflow-hidden">
+    <div className="w-[300px] flex flex-col justify-center items-center bg-gray-200 h-2 rounded">
       <motion.div
         className="h-full bg-primary"
         initial={{ width: 0 }}

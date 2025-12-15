@@ -6,15 +6,14 @@ import Swal from "sweetalert2";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 const HrRegister = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { signUp, setUser, updateUserProfile, user } = useAuth();
+  const { signUp, setUser, updateUserProfile } = useAuth();
   const handleHrRegistation = (data) => {
-    console.log(data);
     const displayName = data.fullName;
     const email = data.email;
     const role = data.role;
@@ -63,8 +62,7 @@ const HrRegister = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate("/hr_dashbord")
-        
+        navigate("/hr_dashbord");
       })
       .catch((error) => {
         const errorMessage = error.message;

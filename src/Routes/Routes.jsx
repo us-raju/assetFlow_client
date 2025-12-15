@@ -87,7 +87,7 @@ const router = createBrowserRouter([
     Component: Employee_Dashbord,
     children: [
       {
-        path: "/employee_dashbord/myasset",
+        path: "/employee_dashbord",
         element: <MyAsset></MyAsset>,
       },
       {

@@ -1,11 +1,73 @@
-import React from "react";
-import { Link } from "react-router";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { Link, useNavigate } from "react-router";
+import useAuth from "../../../Hooks/useAuth";
+import Swal from "sweetalert2";
 
 const EmployeeRegister = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const [showPassword, setShowPassword] = useState(false);
+  const { signUp, setUser, updateUserProfile } = useAuth();
+  const navigate = useNavigate();
+
+  const handleEmployeeRegistration = (data) => {
+    console.log(data);
+    const displayName = data.fullName;
+    const email = data.email;
+    const role = data.role;
+    const dateOfBirth = data.dateOfBirth;
+    const profileImage = data.ProfileImage;
+
+    signUp(data.email, data.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        setUser(user);
+        updateUserProfile({
+          displayName: displayName,
+          email: email,
+          role: role,
+          dateOfBirth: dateOfBirth,
+          profileImage: profileImage,
+        }).then(() => {
+          setUser({
+            ...user,
+            displayName: displayName,
+            email: email,
+            role: role,
+            dateOfBirth: dateOfBirth,
+            profileImage: profileImage,
+          });
+        });
+        Swal.fire({
+          title: "Registration",
+          icon: "success",
+          position: "top-start",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate("/employee_dashbord");
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        Swal.fire({
+          title: errorMessage,
+          icon: "error",
+          draggable: false,
+        });
+      });
+  };
   return (
     <>
       <section className="mt-10">
-        <form className="bg-[#f5f5f5] shadow-[0_20px_50px_rgba(8,112,184,0.3)] max-w-lg p-5 rounded-[10px] mx-auto">
+        <form
+          onSubmit={handleSubmit(handleEmployeeRegistration)}
+          className="bg-[#f5f5f5] shadow-[0_20px_50px_rgba(8,112,184,0.3)] max-w-lg p-5 rounded-[10px] mx-auto"
+        >
           <h2 className="text-[18px] lg:text-3xl text-primary font-bold mb-2 text-center">
             Registration
           </h2>
@@ -15,6 +77,7 @@ const EmployeeRegister = () => {
               Full Name*
             </label>
             <input
+              {...register("fullName", { required: true })}
               type="text"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               placeholder="Full Name"
@@ -23,13 +86,26 @@ const EmployeeRegister = () => {
             {/* Email  */}
             <label className="label text-primary font-semibold">Email*</label>
             <input
+              {...register("email", { required: true })}
               type="text"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               placeholder="Email"
             />
+
+            {/* Profile Image url  */}
+            <label className="label text-primary font-semibold">
+              Profile Image*
+            </label>
+            <input
+              {...register("ProfileImage", { required: true })}
+              type="url"
+              className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
+              placeholder="Profile Image (URL)"
+            />
             {/* Role  */}
             <label className="label text-primary font-semibold">Role</label>
             <input
+              {...register("role")}
               type="text"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               readOnly
@@ -40,20 +116,53 @@ const EmployeeRegister = () => {
               Date of Birth
             </label>
             <input
+              {...register("dateOfBirth", { required: true })}
               type="date"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
-             
             />
             {/* password  */}
-
-            <label className="label text-primary font-semibold">
-              Password*
-            </label>
-            <input
-              type="password"
-              className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
-              placeholder="Password"
-            />
+            <div className="relative">
+              <label className="label text-primary font-semibold">
+                Password*
+              </label>
+              <input
+                {...register("password", {
+                  required: true,
+                  minLength: 6,
+                  pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
+                })}
+                type={showPassword ? "text" : "password"}
+                className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full pr-8"
+                placeholder="Password"
+              />
+              <span className="absolute top-7 right-2 cursor-pointer z-30">
+                {showPassword ? (
+                  <IoEyeOutline
+                    onClick={() => setShowPassword(false)}
+                    size={20}
+                  />
+                ) : (
+                  <IoEyeOffOutline
+                    onClick={() => setShowPassword(true)}
+                    size={20}
+                  />
+                )}
+              </span>
+              {errors.password?.type === "required" && (
+                <p className="text-warning">Password is required</p>
+              )}
+              {errors.password?.type === "minLength" && (
+                <p className="text-warning">
+                  Password must be at least 6 characters long
+                </p>
+              )}
+              {errors.password?.type === "pattern" && (
+                <p className="text-warning">
+                  Password must include at least one uppercase letter, one
+                  lowercase letter, one number, and one special character
+                </p>
+              )}
+            </div>
 
             <button
               type="submit"
