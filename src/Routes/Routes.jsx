@@ -18,6 +18,7 @@ import RequestAsset from "../Layouts/DashbordLayout/Employee_Dashbord/EmployeeDa
 import MyTeam from "../Layouts/DashbordLayout/Employee_Dashbord/EmployeeDashbordPage/MyTeam";
 import EmProfile from "../Layouts/DashbordLayout/Employee_Dashbord/EmployeeDashbordPage/EmProfile";
 import PrivateRoute from "../Provider/PrivateRoute";
+import HRCompanyInfo from "../Layouts/AuthLayout/HR_Register/HRcompanyInfo/HRCompanyInfo";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login></Login>,
+      },
+      {
+        path: "/hrcompanyInfo",
+        element: <HRCompanyInfo></HRCompanyInfo>,
       },
     ],
   },

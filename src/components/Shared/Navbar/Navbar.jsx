@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 import { Link } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
+import Loading from "../../Loading/Loading";
 
 const Navbar = () => {
   const { user, loading, LogOut } = useAuth();
+
   const handleHrLogOut = () => {
     LogOut()
       .then(() => {
         Swal.fire({
           title: "LogOut Successfull",
           icon: "success",
-          position: "top-start",
+          position: "top",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -26,11 +28,9 @@ const Navbar = () => {
         });
       });
   };
+  if (loading) return <Loading></Loading>;
   const links = (
     <>
-      <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
-        <Link to="/">Home</Link>
-      </li>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
         <Link to="/employeeRegister">Join as Employee</Link>
       </li>
@@ -67,24 +67,24 @@ const Navbar = () => {
   const employeedrowdownLinks = (
     <>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
-        <Link to="/"> My Assets</Link>
+        <Link to="/employee_dashbord"> My Assets</Link>
       </li>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
-        <Link to="/"> My Team</Link>
+        <Link to="/employee_dashbord/myteam"> My Team</Link>
       </li>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
-        <Link to="/">Request Asset</Link>
+        <Link to="/employee_dashbord/requsetasset">Request Asset</Link>
       </li>
 
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
-        <Link to="/">Profile</Link>
+        <Link to="/employee_dashbord/emprofile">Profile</Link>
       </li>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
-        <button>Logout</button>
+        <button onClick={handleHrLogOut}>Logout</button>
       </li>
     </>
   );
-
+  console.log(user);
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="navbar-start">
@@ -110,19 +110,25 @@ const Navbar = () => {
             tabIndex="-1"
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow text-primary font-medium "
           >
-            {links}
-
-            <li>
-              <details>
-                <summary className="hover:text-base-200 hover:bg-primary hover:rounded-[10px] ">
-                  Employee
-                </summary>
-                <ul className="p-2 bg-base-100 w-40 z-1 text-primary font-medium">
-                  {/* drop down li  */}
-                  {employeedrowdownLinks}
-                </ul>
-              </details>
+            <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
+              <Link to="/">Home</Link>
             </li>
+            {user ? (
+              <li>
+                <details>
+                  <summary className="hover:text-base-200 hover:bg-primary hover:rounded-[10px] ">
+                    {user.role === "hr" ? "HR Manager" : "Employee"}
+                  </summary>
+                  <ul className="p-2 bg-base-100 w-40 z-1 text-primary font-medium">
+                    {user.role === "hr"
+                      ? HrdrowdownLinks
+                      : employeedrowdownLinks}
+                  </ul>
+                </details>
+              </li>
+            ) : (
+              links
+            )}
           </ul>
         </div>
 
@@ -132,25 +138,40 @@ const Navbar = () => {
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 text-primary font-medium ">
-          {links}
-          <li>
-            <details>
-              <summary className="hover:text-base-200 hover:bg-primary hover:rounded-[10px] ">
-                HR Manager
-              </summary>
-              <ul className="p-2 bg-base-100 w-40 z-1">
-                {/* drop down li  */}
-                {HrdrowdownLinks}
-              </ul>
-            </details>
+          <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
+            <Link to="/">Home</Link>
           </li>
+          {user ? (
+            <li>
+              <details>
+                <summary className="hover:text-base-200 hover:bg-primary hover:rounded-[10px] ">
+                  {user.role === "hr" ? "HR Manager" : "Employee"}
+                </summary>
+                <ul className="p-2 bg-base-100 w-40 z-1">
+                  {user.role === "hr" ? HrdrowdownLinks : employeedrowdownLinks}
+                </ul>
+              </details>
+            </li>
+          ) : (
+            links
+          )}
         </ul>
       </div>
       <div className="navbar-end">
         <div className="w-[45px] h-[45px]">
           {user ? (
-            <Link to="/Profile">
-              <img className="w-full h-full rounded-full" src={user.companyLogo} alt="" />
+            <Link
+              to={
+                user.role === "hr"
+                  ? "/hr_dashbord/profile"
+                  : "/employee_dashbord/emprofile"
+              }
+            >
+              <img
+                className="w-full h-full rounded-full"
+                src={user.PhotoURL}
+                alt=""
+              />
             </Link>
           ) : (
             <span className="w-full h-full">

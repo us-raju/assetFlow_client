@@ -1,9 +1,28 @@
-import React from "react";
+import { React } from "react";
 import { FaFacebook, FaLinkedin } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import useAuth from "../../../Hooks/useAuth";
+import Loading from "../../Loading/Loading";
 
 const Footer = () => {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+  if (loading) return <Loading></Loading>;
+  const GoDashbord = () => {
+    if (user.role === "hr") {
+      navigate("/hr_dashbord");
+    } else {
+      navigate("/employee_dashbord");
+    }
+  };
+  const GoProfile = () => {
+    if (user.role === "hr") {
+      navigate("/hr_dashbord/profile");
+    } else {
+      navigate("/employee_dashbord/emprofile");
+    }
+  };
   return (
     <>
       <footer className="bg-[#F5F5F5] text-base-content p-10 mt-20">
@@ -24,8 +43,20 @@ const Footer = () => {
               Quick Links
             </h6>
             <Link to="/">Home</Link>
-            <Link to="/dashbord">Dashbord</Link>
-            <Link to="/profile">Profile</Link>
+            <button
+              onClick={GoDashbord}
+              type="button"
+              className="cursor-pointer"
+            >
+              Dashbord
+            </button>
+            <button
+              onClick={GoProfile}
+              type="button"
+              className="cursor-pointer"
+            >
+              Profile
+            </button>
           </nav>
           <nav className="text-secondary text-[14px] md:text-[16px]">
             <h6 className="text-[16px] md:text-[18px] text-primary font-semibold">

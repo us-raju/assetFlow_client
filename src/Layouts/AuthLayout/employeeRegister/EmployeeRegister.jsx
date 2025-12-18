@@ -12,7 +12,7 @@ const EmployeeRegister = () => {
     formState: { errors },
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
-  const { signUp, setUser, updateUserProfile } = useAuth();
+  const { signUp, setUser, updateUserProfile, SingIngoogle } = useAuth();
   const navigate = useNavigate();
 
   const handleEmployeeRegistration = (data) => {
@@ -21,7 +21,7 @@ const EmployeeRegister = () => {
     const email = data.email;
     const role = data.role;
     const dateOfBirth = data.dateOfBirth;
-    const profileImage = data.ProfileImage;
+    const photoURL = data.ProfileImage;
 
     signUp(data.email, data.password)
       .then((userCredential) => {
@@ -32,7 +32,7 @@ const EmployeeRegister = () => {
           email: email,
           role: role,
           dateOfBirth: dateOfBirth,
-          profileImage: profileImage,
+          photoURL: photoURL,
         }).then(() => {
           setUser({
             ...user,
@@ -40,13 +40,13 @@ const EmployeeRegister = () => {
             email: email,
             role: role,
             dateOfBirth: dateOfBirth,
-            profileImage: profileImage,
+            photoURL: photoURL,
           });
         });
         Swal.fire({
           title: "Registration",
           icon: "success",
-          position: "top-start",
+          position: "top",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -57,7 +57,29 @@ const EmployeeRegister = () => {
         Swal.fire({
           title: errorMessage,
           icon: "error",
-          draggable: false,
+        });
+      });
+  };
+
+  const handleGoogleSignIn = () => {
+    SingIngoogle().then((result)=>{
+      const user = result.user;
+      setUser(user)
+        Swal.fire({
+          title: "Registration",
+          icon: "success",
+          position: "top",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate("/");
+
+    })
+    .catch((error) => {
+        const errorMessage = error.message;
+        Swal.fire({
+          title: errorMessage,
+          icon: "error",
         });
       });
   };
@@ -172,7 +194,8 @@ const EmployeeRegister = () => {
             </button>
             <p className="text-primary font-semibold text-center mt-2">OR</p>
             <button
-              type="submit"
+            onClick={handleGoogleSignIn}
+              type="button"
               className="btn text-primary border-secondary bg-transparent hover:text-base-200 hover:bg-primary  mt-4"
             >
               <svg
