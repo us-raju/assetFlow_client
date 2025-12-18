@@ -6,6 +6,7 @@ import {
   getAuth,
   GoogleAuthProvider,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
   updateProfile,
@@ -36,6 +37,11 @@ const AuthProvider = ({ children }) => {
     return signInWithPopup(auth, googleProvider);
   };
 
+  // Login functionlity here
+
+  const LogIn = (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password);
+  };
   // authentication observer
   useEffect(() => {
     const unsubcribe = onAuthStateChanged(auth, (currentUser) => {
@@ -55,6 +61,7 @@ const AuthProvider = ({ children }) => {
     updateUserProfile,
     LogOut,
     SingIngoogle,
+    LogIn
   };
   return <AuthContext value={authData}>{children}</AuthContext>;
 };

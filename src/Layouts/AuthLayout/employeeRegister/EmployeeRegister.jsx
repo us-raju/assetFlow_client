@@ -89,7 +89,6 @@ const EmployeeRegister = () => {
           })
           .catch((err) => {
             const errMessage = err.message;
-            console.log(errMessage);
           });
       })
       .catch((error) => {

@@ -14,7 +14,7 @@ const HrRegister = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { signUp, setUser, updateUserProfile, SingIngoogle, user } = useAuth();
+  const { signUp, setUser,  SingIngoogle,  } = useAuth();
   const handleHrRegistation = (data) => {
     const displayName = data.fullName;
     const email = data.email;
@@ -46,7 +46,7 @@ const HrRegister = () => {
         Swal.fire({
           title: "Registration",
           icon: "success",
-          position: "top-start",
+          position: "top",
           showConfirmButton: false,
           timer: 1500,
         });
