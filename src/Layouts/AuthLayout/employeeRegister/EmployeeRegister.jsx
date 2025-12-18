@@ -4,6 +4,7 @@ import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
+import useAxios from "../../../Hooks/useAxios";
 
 const EmployeeRegister = () => {
   const {
@@ -14,9 +15,9 @@ const EmployeeRegister = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { signUp, setUser, updateUserProfile, SingIngoogle, user } = useAuth();
   const navigate = useNavigate();
+  const instance = useAxios();
 
   const handleEmployeeRegistration = (data) => {
-    console.log(data);
     const displayName = data.fullName;
     const email = data.email;
     const role = data.role;
@@ -27,22 +28,13 @@ const EmployeeRegister = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         setUser(user);
-        updateUserProfile({
+        const userData = {
           displayName: displayName,
           email: email,
           role: role,
           dateOfBirth: dateOfBirth,
           photoURL: photoURL,
-        }).then(() => {
-          setUser({
-            ...user,
-            displayName: displayName,
-            email: email,
-            role: role,
-            dateOfBirth: dateOfBirth,
-            photoURL: photoURL,
-          });
-        });
+        };
         Swal.fire({
           title: "Registration",
           icon: "success",
@@ -51,6 +43,16 @@ const EmployeeRegister = () => {
           timer: 1500,
         });
         navigate("/employee_dashbord");
+
+        instance
+          .post("/user", userData)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            const errMessage = err.message;
+            console.log(errMessage);
+          });
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -68,15 +70,10 @@ const EmployeeRegister = () => {
       .then((result) => {
         const user = result.user;
         setUser(user);
-        updateUserProfile({
-          role: role
-        }).then(() => {
-          setUser({
-            ...user,
-
-            role: role,
-          });
-        });
+        const userData = {
+          ...user,
+          role: role,
+        };
         Swal.fire({
           title: "Registration",
           icon: "success",
@@ -85,6 +82,15 @@ const EmployeeRegister = () => {
           timer: 1500,
         });
         navigate("/employee_dashbord");
+        instance
+          .post("/user", userData)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            const errMessage = err.message;
+            console.log(errMessage);
+          });
       })
       .catch((error) => {
         const errorMessage = error.message;

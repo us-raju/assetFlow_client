@@ -1,15 +1,44 @@
 import { s } from "motion/react-m";
 import React, { useState } from "react";
 import { FaXmark } from "react-icons/fa6";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import useAuth from "../../../Hooks/useAuth";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const [registrationLinkModal, setRegistrationLinkModal] = useState(false);
+  const { SingIngoogle } = useAuth();
+  const navigate = useNavigate();
+  const handleGoogleSignIn = () => {
+    SingIngoogle()
+      .then((result) => {
+        const user = result.user;
+        Swal.fire({
+          title: "Registration",
+          icon: "success",
+          position: "top",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate("/employee_dashbord");
+      })
+
+      .catch((error) => {
+        const errorMessage = error.message;
+        Swal.fire({
+          title: errorMessage,
+          icon: "error",
+        });
+      });
+  };
   return (
     <>
       <section className="mt-10">
         <div className="">
-          <form className="bg-[#f5f5f5] shadow-[0_20px_50px_rgba(8,112,184,0.3)] max-w-lg p-5 rounded-[10px] mx-auto relative">
+          <form
+            
+            className="bg-[#f5f5f5] shadow-[0_20px_50px_rgba(8,112,184,0.3)] max-w-lg p-5 rounded-[10px] mx-auto relative"
+          >
             <h2 className="text-[18px] lg:text-3xl text-primary font-bold mb-2 text-center">
               Login
             </h2>
@@ -37,7 +66,8 @@ const Login = () => {
               </button>
               <p className="text-primary font-semibold text-center mt-2">OR</p>
               <button
-                type="submit"
+                onClick={handleGoogleSignIn}
+                type="button"
                 className="btn text-primary border-secondary bg-transparent hover:text-base-200 hover:bg-primary  mt-4 rounded-[10px]"
               >
                 <svg
@@ -95,7 +125,8 @@ const Login = () => {
                   Create an HR account
                 </Link>
 
-                <button onClick={()=>setRegistrationLinkModal(false)}
+                <button
+                  onClick={() => setRegistrationLinkModal(false)}
                   className="w-[30px] h-[30px] flex justify-center items-center rounded-full bg-transparent text-primary border border-primary hover:bg-primary hover:text-base-200  cursor-pointer top-2.5 right-2.5 absolute"
                   type="button"
                 >

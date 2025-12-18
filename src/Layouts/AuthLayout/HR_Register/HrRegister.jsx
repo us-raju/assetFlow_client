@@ -4,15 +4,17 @@ import { Link, Navigate, useNavigate } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import useAxios from "../../../Hooks/useAxios";
 const HrRegister = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const instance = useAxios();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { signUp, setUser, updateUserProfile, SingIngoogle, } = useAuth();
+  const { signUp, setUser, updateUserProfile, SingIngoogle, user } = useAuth();
   const handleHrRegistation = (data) => {
     const displayName = data.fullName;
     const email = data.email;
@@ -25,36 +27,22 @@ const HrRegister = () => {
     const dateOfBirth = data.dateOfBirth;
     const photoURL = data.ProfileImage;
 
+    const userData = {
+      displayName: displayName,
+      email: email,
+      role: role,
+      companyName: companyName,
+      companyLogo: companyLogo,
+      packageLimit: packageLimit,
+      currentEmployees: currentEmployees,
+      subscription: subscription,
+      dateOfBirth: dateOfBirth,
+      photoURL: photoURL,
+    };
     signUp(data.email, data.password)
       .then((userCredential) => {
         const user = userCredential.user;
         setUser(user);
-        updateUserProfile({
-          displayName: displayName,
-          email: email,
-          role: role,
-          companyName: companyName,
-          companyLogo: companyLogo,
-          packageLimit: packageLimit,
-          currentEmployees: currentEmployees,
-          subscription: subscription,
-          dateOfBirth: dateOfBirth,
-          photoURL: photoURL,
-        }).then(() => {
-          setUser({
-            ...user,
-            displayName: displayName,
-            email: email,
-            role: role,
-            companyName: companyName,
-            companyLogo: companyLogo,
-            packageLimit: packageLimit,
-            currentEmployees: currentEmployees,
-            subscription: subscription,
-            dateOfBirth: dateOfBirth,
-            photoURL: photoURL,
-          });
-        });
         Swal.fire({
           title: "Registration",
           icon: "success",
@@ -72,6 +60,16 @@ const HrRegister = () => {
           draggable: false,
         });
       });
+
+    instance
+      .post("/user", userData)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        const errMessage = err.message;
+        console.log(errMessage);
+      });
   };
 
   const handleGoogleSignIn = () => {
@@ -80,7 +78,6 @@ const HrRegister = () => {
         const user = result.user;
         setUser(user);
         navigate("/hrcompanyInfo");
-      
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -90,6 +87,7 @@ const HrRegister = () => {
         });
       });
   };
+
   return (
     <>
       <section className="mt-10">

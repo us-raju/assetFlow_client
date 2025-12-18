@@ -4,12 +4,18 @@ import useAuth from "../../../../Hooks/useAuth";
 import Loading from "../../../../components/Loading/Loading";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import useAxios from "../../../../Hooks/useAxios";
 
 const HRCompanyInfo = () => {
   const { register, handleSubmit } = useForm();
-  const { user, setUser, loading, updateUserProfile } = useAuth();
+  const { user, loading } = useAuth();
+  const instance = useAxios();
   const navigate = useNavigate();
+  if (loading) return <Loading></Loading>;
   const handleHrRegistation = (data) => {
+    const displayName = user.displayName;
+    const email = user.email;
+    const photoURL = user.photoURL;
     const role = data.role;
     const companyName = data.companyName;
     const companyLogo = data.companyLogo;
@@ -18,27 +24,18 @@ const HRCompanyInfo = () => {
     const subscription = data.subscription;
     const dateOfBirth = data.dateOfBirth;
 
-    updateUserProfile({
+    const userData = {
+      displayName: displayName,
+      email: email,
+      role: role,
       companyName: companyName,
       companyLogo: companyLogo,
-      role: role,
-      dateOfBirth: dateOfBirth,
-      subscription: subscription,
-      currentEmployees: currentEmployees,
       packageLimit: packageLimit,
-    }).then(() => {
-      setUser({
-        ...user,
-
-        companyName: companyName,
-        companyLogo: companyLogo,
-        role: role,
-        dateOfBirth: dateOfBirth,
-        subscription: subscription,
-        currentEmployees: currentEmployees,
-        packageLimit: packageLimit,
-      });
-    });
+      currentEmployees: currentEmployees,
+      subscription: subscription,
+      dateOfBirth: dateOfBirth,
+      photoURL: photoURL,
+    };
     Swal.fire({
       title: "Registration",
       icon: "success",
@@ -47,9 +44,16 @@ const HRCompanyInfo = () => {
       timer: 1500,
     });
     navigate("/hr_dashbord");
+    instance
+      .post("/user", userData)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        const errMessage = err.message;
+        console.log(errMessage);
+      });
   };
-
-
 
   return (
     <>
