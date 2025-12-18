@@ -12,7 +12,7 @@ const EmployeeRegister = () => {
     formState: { errors },
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
-  const { signUp, setUser, updateUserProfile, SingIngoogle } = useAuth();
+  const { signUp, setUser, updateUserProfile, SingIngoogle, user } = useAuth();
   const navigate = useNavigate();
 
   const handleEmployeeRegistration = (data) => {
@@ -62,9 +62,21 @@ const EmployeeRegister = () => {
   };
 
   const handleGoogleSignIn = () => {
-    SingIngoogle().then((result)=>{
-      const user = result.user;
-      setUser(user)
+    const role = "employee";
+
+    SingIngoogle()
+      .then((result) => {
+        const user = result.user;
+        setUser(user);
+        updateUserProfile({
+          role: role
+        }).then(() => {
+          setUser({
+            ...user,
+
+            role: role,
+          });
+        });
         Swal.fire({
           title: "Registration",
           icon: "success",
@@ -72,10 +84,9 @@ const EmployeeRegister = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate("/");
-
-    })
-    .catch((error) => {
+        navigate("/employee_dashbord");
+      })
+      .catch((error) => {
         const errorMessage = error.message;
         Swal.fire({
           title: errorMessage,
@@ -83,6 +94,7 @@ const EmployeeRegister = () => {
         });
       });
   };
+
   return (
     <>
       <section className="mt-10">
@@ -194,7 +206,7 @@ const EmployeeRegister = () => {
             </button>
             <p className="text-primary font-semibold text-center mt-2">OR</p>
             <button
-            onClick={handleGoogleSignIn}
+              onClick={handleGoogleSignIn}
               type="button"
               className="btn text-primary border-secondary bg-transparent hover:text-base-200 hover:bg-primary  mt-4"
             >

@@ -48,9 +48,9 @@ const HRCompanyInfo = () => {
     });
     navigate("/hr_dashbord");
   };
-  if (loading) return <Loading></Loading>;
 
-  console.log(user);
+
+
   return (
     <>
       <section className="mt-10">

@@ -80,14 +80,7 @@ const HrRegister = () => {
         const user = result.user;
         setUser(user);
         navigate("/hrcompanyInfo");
-        // Swal.fire({
-        //   title: "Registration",
-        //   icon: "success",
-        //   position: "top",
-        //   showConfirmButton: false,
-        //   timer: 1500,
-        // });
-        // navigate("/");
+      
       })
       .catch((error) => {
         const errorMessage = error.message;
