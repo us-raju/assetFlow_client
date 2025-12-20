@@ -3,7 +3,6 @@ import useAxios from "../../../../Hooks/useAxios";
 import useAuth from "../../../../Hooks/useAuth";
 import Loading from "../../../../components/Loading/Loading";
 import { useForm } from "react-hook-form";
-import { object } from "motion/react-client";
 import Swal from "sweetalert2";
 
 const AssetList = () => {
@@ -61,6 +60,36 @@ const AssetList = () => {
 
     reset();
     assetModalRef.current.close();
+  };
+
+  const deleteAsset = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          instance.delete(`/asset/${id}`).then((res) => {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your Asset has been deleted.",
+              icon: "success",
+            });
+          });
+        }
+      })
+      .catch((err) => {
+        const errMessage = err.message;
+        Swal.fire({
+          title: errMessage,
+          icon: "error",
+        });
+      });
   };
   if (loading) return <Loading></Loading>;
 
@@ -132,12 +161,17 @@ const AssetList = () => {
                     <td>{asset.addedDate}</td>
                     <td>
                       <button
+                        type="button"
                         onClick={() => assetModal(asset._id)}
                         className="btn border-secondary bg-transparent hover:bg-primary hover:text-base-200 duration-200 btn-xs sm:mr-2 mb-2 sm:mb-0"
                       >
                         Edit
                       </button>
-                      <button className="btn btn-ghost btn-xs border-secondary bg-transparent hover:bg-primary hover:text-base-200 duration-200">
+                      <button
+                        type="button"
+                        onClick={() => deleteAsset(asset._id)}
+                        className="btn btn-ghost btn-xs border-secondary bg-transparent hover:bg-primary hover:text-base-200 duration-200"
+                      >
                         Delete
                       </button>
                     </td>
