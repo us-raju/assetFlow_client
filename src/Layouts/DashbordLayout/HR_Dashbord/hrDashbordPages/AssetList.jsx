@@ -1,11 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useAxios from "../../../../Hooks/useAxios";
 import useAuth from "../../../../Hooks/useAuth";
 import Loading from "../../../../components/Loading/Loading";
+import { useForm } from "react-hook-form";
+import { object } from "motion/react-client";
+import Swal from "sweetalert2";
 
 const AssetList = () => {
   const [assets, setAssets] = useState([]);
   const { loading } = useAuth();
+  const assetModalRef = useRef();
+  const { register, handleSubmit, reset } = useForm();
+  const [productId, setProductId] = useState("");
+
   const instance = useAxios();
   useEffect(() => {
     instance.get("/asset").then((res) => {
@@ -13,8 +20,50 @@ const AssetList = () => {
       setAssets(assetData);
     });
   }, [instance]);
+  const assetModal = (id) => {
+    assetModalRef.current.showModal();
+    setProductId(id);
+  };
+  const assetModalClose = () => {
+    assetModalRef.current.close();
+  };
+  const AssetUpdateFunc = (data) => {
+    const updatedData = {};
+    Object.keys(data).forEach((assetKey) => {
+      if (
+        data[assetKey] !== "" &&
+        data[assetKey] !== null &&
+        data[assetKey] !== undefined &&
+        data[assetKey] !== "Product Type"
+      ) {
+        updatedData[assetKey] = data[assetKey];
+      }
+    });
+
+    instance
+      .patch(`/asset/${productId}`, updatedData)
+      .then((res) => {
+        Swal.fire({
+          title: "asset Update Successfully",
+          icon: "success",
+          position: "top",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })
+      .catch((err) => {
+        const errMessage = err.message;
+        Swal.fire({
+          title: errMessage,
+          icon: "error",
+        });
+      });
+
+    reset();
+    assetModalRef.current.close();
+  };
   if (loading) return <Loading></Loading>;
-  console.log(assets);
+
   return (
     <>
       <section>
@@ -82,7 +131,10 @@ const AssetList = () => {
                     <td>{asset.productQuantity}</td>
                     <td>{asset.addedDate}</td>
                     <td>
-                      <button className="btn border-secondary bg-transparent hover:bg-primary hover:text-base-200 duration-200 btn-xs sm:mr-2 mb-2 sm:mb-0">
+                      <button
+                        onClick={() => assetModal(asset._id)}
+                        className="btn border-secondary bg-transparent hover:bg-primary hover:text-base-200 duration-200 btn-xs sm:mr-2 mb-2 sm:mb-0"
+                      >
                         Edit
                       </button>
                       <button className="btn btn-ghost btn-xs border-secondary bg-transparent hover:bg-primary hover:text-base-200 duration-200">
@@ -95,6 +147,71 @@ const AssetList = () => {
             </table>
           </div>
         </div>
+
+        <dialog ref={assetModalRef} id="my_modal_3" className="modal">
+          <form
+            method="dialog"
+            onSubmit={handleSubmit(AssetUpdateFunc)}
+            className="fieldset bg-[#f5f5f5] shadow-[0_20px_50px_rgba(8,112,184,0.3)] p-5 rounded-[10px] max-w-lg mx-auto modal-box"
+          >
+            <button
+              type="button"
+              onClick={assetModalClose}
+              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            >
+              ✕
+            </button>
+            <h2 className="text-[18px] lg:text-3xl text-primary font-bold mb-2 text-center">
+              Update an Asset
+            </h2>
+            <label className="label text-primary font-semibold">
+              Product Name
+            </label>
+            <input
+              {...register("productName")}
+              type="name"
+              className="input text-secondary outline-primary border-secondary  focus:border-none placeholder:text-secondary w-full"
+              placeholder="Product Name"
+            />
+            <label className="label text-primary font-semibold">
+              Product Image
+            </label>
+            <input
+              {...register("productImage")}
+              type="url"
+              className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
+              placeholder="Product Image Link(url)"
+            />
+            <label className="label text-primary font-semibold">
+              Product Type
+            </label>
+            <select
+              {...register("productType")}
+              className="select text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
+            >
+              <option selected disabled>
+                Product Type
+              </option>
+              <option>Returnable</option>
+              <option>Non-returnable</option>
+            </select>{" "}
+            <label className="label text-primary font-semibold">
+              Product Quantity
+            </label>
+            <input
+              {...register("productQuantity")}
+              type="number"
+              className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
+              placeholder=" Product Quantity"
+            />
+            <button
+              type="submit"
+              className="btn text-primary border-secondary bg-transparent hover:text-base-200 hover:bg-primary  mt-4"
+            >
+              Update Asset
+            </button>
+          </form>
+        </dialog>
       </section>
     </>
   );

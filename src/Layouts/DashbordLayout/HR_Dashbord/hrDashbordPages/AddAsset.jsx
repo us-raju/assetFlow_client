@@ -11,8 +11,8 @@ const AddAsset = () => {
   const handleAsset = (data) => {
     const productName = data.productName;
     const productImage = data.productImage;
-    const productType = data.productQuantity;
-    const productQuantity = data.productType;
+    const productType = data.productType;
+    const productQuantity = data.productQuantity;
     const hrEmail = user.email;
     const companyName = user.companyName;
     const assetInfo = {
