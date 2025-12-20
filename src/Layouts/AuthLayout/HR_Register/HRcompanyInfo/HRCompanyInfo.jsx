@@ -8,7 +8,7 @@ import useAxios from "../../../../Hooks/useAxios";
 
 const HRCompanyInfo = () => {
   const { register, handleSubmit } = useForm();
-  const { user, loading } = useAuth();
+  const { user, loading, setUser } = useAuth();
   const instance = useAxios();
   const navigate = useNavigate();
   if (loading) return <Loading></Loading>;
@@ -36,6 +36,7 @@ const HRCompanyInfo = () => {
       dateOfBirth: dateOfBirth,
       photoURL: photoURL,
     };
+    setUser(userData);
     Swal.fire({
       title: "Registration",
       icon: "success",

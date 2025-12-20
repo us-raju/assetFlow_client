@@ -26,7 +26,7 @@ const AssetList = () => {
               type="search"
               className="text-secondary  placeholder:text-secondary"
               required
-              placeholder="Search"
+              placeholder="Search by asset name"
             />
           </label>
         </div>

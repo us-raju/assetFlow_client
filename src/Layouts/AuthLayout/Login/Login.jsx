@@ -5,10 +5,12 @@ import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import useAxios from "../../../Hooks/useAxios";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
 const Login = () => {
   const [registrationLinkModal, setRegistrationLinkModal] = useState(false);
-  const { SingIngoogle, LogIn, setUser, user } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+  const { SingIngoogle, LogIn, setUser } = useAuth();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const instance = useAxios();
@@ -20,19 +22,19 @@ const Login = () => {
         instance.post("/login", { email }).then((res) => {
           const dbUser = res.data;
           setUser(dbUser);
+          if (dbUser.role === "hr") {
+            navigate("/hr_dashbord");
+          } else {
+            navigate("/employee_dashbord");
+          }
         });
         Swal.fire({
-          title: "Registration",
+          title: "LogIn Successfull",
           icon: "success",
           position: "top",
           showConfirmButton: false,
           timer: 1500,
         });
-        if (user.role === "hr") {
-          navigate("/hr_dashbord");
-        } else {
-          navigate("/employee_dashbord");
-        }
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -50,7 +52,7 @@ const Login = () => {
         instance.post("/login", { email }).then((res) => {
           const dbUser = res.data;
           setUser(dbUser);
-          if (user.role === "hr") {
+          if (dbUser.role === "hr") {
             navigate("/hr_dashbord");
           } else {
             navigate("/employee_dashbord");
@@ -73,7 +75,7 @@ const Login = () => {
         });
       });
   };
-  console.log(user);
+
   return (
     <>
       <section className="mt-10">
@@ -94,15 +96,30 @@ const Login = () => {
                 placeholder="Email"
               />
               {/* password  */}
-              <label className="label text-primary font-semibold">
-                Password*
-              </label>
-              <input
-                {...register("password", { required: true })}
-                type="password"
-                className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full rounded-[10px]"
-                placeholder="Password"
-              />
+              <div className="relative">
+                <label className="label text-primary font-semibold">
+                  Password*
+                </label>
+                <input
+                  {...register("password", { required: true })}
+                  type={showPassword ? "text" : "password"}
+                  className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full rounded-[10px]"
+                  placeholder="Password"
+                />
+                <span className="absolute top-7 right-2 cursor-pointer z-30">
+                  {showPassword ? (
+                    <IoEyeOutline
+                      onClick={() => setShowPassword(false)}
+                      size={20}
+                    />
+                  ) : (
+                    <IoEyeOffOutline
+                      onClick={() => setShowPassword(true)}
+                      size={20}
+                    />
+                  )}
+                </span>
+              </div>
               <button
                 type="submit"
                 className="btn text-primary border-secondary bg-transparent hover:text-base-200 hover:bg-primary  mt-4 rounded-[10px]"

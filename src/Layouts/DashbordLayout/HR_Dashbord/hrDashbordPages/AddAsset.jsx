@@ -1,11 +1,60 @@
 import React from "react";
+import useAuth from "../../../../Hooks/useAuth";
+import { useForm } from "react-hook-form";
+import useAxios from "../../../../Hooks/useAxios";
+import Swal from "sweetalert2";
 
 const AddAsset = () => {
+  const { user } = useAuth();
+  const { register, handleSubmit } = useForm();
+  const instance = useAxios();
+  const handleAsset = (data) => {
+    const productName = data.productName;
+    const productImage = data.productImage;
+    const productType = data.productQuantity;
+    const productQuantity = data.productType;
+    const hrEmail = user.email;
+    const companyName = user.companyName;
+    const assetInfo = {
+      productName: productName,
+      productImage: productImage,
+      productType: productType,
+      productQuantity: productQuantity,
+      hrEmail: hrEmail,
+      companyName: companyName,
+    };
+
+    instance
+      .post("/asset", assetInfo)
+      .then((res) => {
+        Swal.fire({
+          title: "asset added Successfully",
+          icon: "success",
+          position: "top",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })
+      .catch((err) => {
+        const errMessage = err.message;
+        Swal.fire({
+          title: errMessage,
+          icon: "error",
+        });
+      });
+
+    console.log(assetInfo);
+    data.reset();
+  };
+
   return (
     <>
       <section>
         <div className="form_container">
-          <form className="fieldset bg-[#f5f5f5] shadow-[0_20px_50px_rgba(8,112,184,0.3)] p-5 rounded-[10px] max-w-lg mx-auto ">
+          <form
+            onSubmit={handleSubmit(handleAsset)}
+            className="fieldset bg-[#f5f5f5] shadow-[0_20px_50px_rgba(8,112,184,0.3)] p-5 rounded-[10px] max-w-lg mx-auto "
+          >
             <h2 className="text-[18px] lg:text-3xl text-primary font-bold mb-2 text-center">
               Add an Asset
             </h2>
@@ -13,7 +62,7 @@ const AddAsset = () => {
               Product Name
             </label>
             <input
-              required
+              {...register("productName", { required: true })}
               type="name"
               className="input text-secondary outline-primary border-secondary  focus:border-none placeholder:text-secondary w-full"
               placeholder="Product Name"
@@ -22,7 +71,7 @@ const AddAsset = () => {
               Product Image
             </label>
             <input
-              required
+              {...register("productImage", { required: true })}
               type="url"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               placeholder="Product Image Link(url)"
@@ -30,7 +79,10 @@ const AddAsset = () => {
             <label className="label text-primary font-semibold">
               Product Type
             </label>
-            <select className="select text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full">
+            <select
+              {...register("productType", { required: true })}
+              className="select text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
+            >
               <option selected disabled>
                 Product Type
               </option>
@@ -41,6 +93,7 @@ const AddAsset = () => {
               Product Quantity
             </label>
             <input
+              {...register("productQuantity", { required: true })}
               type="number"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               placeholder=" Product Quantity"

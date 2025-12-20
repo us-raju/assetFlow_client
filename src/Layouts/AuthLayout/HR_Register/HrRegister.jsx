@@ -14,7 +14,7 @@ const HrRegister = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { signUp, setUser,  SingIngoogle,  } = useAuth();
+  const { signUp, setUser, SingIngoogle } = useAuth();
   const handleHrRegistation = (data) => {
     const displayName = data.fullName;
     const email = data.email;
@@ -40,35 +40,35 @@ const HrRegister = () => {
       photoURL: photoURL,
     };
     signUp(data.email, data.password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        setUser(user);
+      .then(() => {
+        // const user = userCredential.user;
+        return instance.post("/user", userData);
+
+        // setUser(userData);
+      })
+      .then(() => {
+        return instance.post("/login", { email: userData.email });
+      })
+      .then((res) => {
+   
+        setUser(res.data);
+
         Swal.fire({
-          title: "Registration",
+          title: "Registration Successful",
           icon: "success",
           position: "top",
           showConfirmButton: false,
           timer: 1500,
         });
+
+
         navigate("/hr_dashbord");
       })
-      .catch((error) => {
-        const errorMessage = error.message;
-        Swal.fire({
-          title: errorMessage,
-          icon: "error",
-          draggable: false,
-        });
-      });
-
-    instance
-      .post("/user", userData)
-      .then((res) => {
-        console.log(res)
-      })
       .catch((err) => {
-        const errMessage = err.message;
-        console.log(errMessage);
+        Swal.fire({
+          title: err.message,
+          icon: "error",
+        });
       });
   };
 

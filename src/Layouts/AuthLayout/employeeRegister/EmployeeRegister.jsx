@@ -13,7 +13,7 @@ const EmployeeRegister = () => {
     formState: { errors },
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
-  const { signUp, setUser, updateUserProfile, SingIngoogle, user } = useAuth();
+  const { signUp, setUser, SingIngoogle } = useAuth();
   const navigate = useNavigate();
   const instance = useAxios();
 
@@ -88,7 +88,11 @@ const EmployeeRegister = () => {
             console.log(res);
           })
           .catch((err) => {
-            const errMessage = err.message;
+            Swal.fire({
+              title: err.message,
+              icon: "error",
+              draggable: false,
+            });
           });
       })
       .catch((error) => {
