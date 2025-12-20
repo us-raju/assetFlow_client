@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 
 const AddAsset = () => {
   const { user } = useAuth();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit,reset } = useForm();
   const instance = useAxios();
   const handleAsset = (data) => {
     const productName = data.productName;
@@ -22,6 +22,7 @@ const AddAsset = () => {
       productQuantity: productQuantity,
       hrEmail: hrEmail,
       companyName: companyName,
+      addedDate: new Date().toISOString().split("T")[0],
     };
 
     instance
@@ -34,6 +35,7 @@ const AddAsset = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+        reset()
       })
       .catch((err) => {
         const errMessage = err.message;
@@ -43,8 +45,7 @@ const AddAsset = () => {
         });
       });
 
-    console.log(assetInfo);
-    data.reset();
+    
   };
 
   return (

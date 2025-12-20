@@ -1,6 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import useAxios from "../../../../Hooks/useAxios";
+import useAuth from "../../../../Hooks/useAuth";
+import Loading from "../../../../components/Loading/Loading";
 
 const AssetList = () => {
+  const [assets, setAssets] = useState([]);
+  const { loading } = useAuth();
+  const instance = useAxios();
+  useEffect(() => {
+    instance.get("/asset").then((res) => {
+      const assetData = res.data;
+      setAssets(assetData);
+    });
+  }, [instance]);
+  if (loading) return <Loading></Loading>;
+  console.log(assets);
   return (
     <>
       <section>
@@ -45,37 +59,38 @@ const AssetList = () => {
                 </tr>
               </thead>
               <tbody className="text-[12px] md:text-[16px]">
-                {/* row 1 */}
-                <tr className="text-secondary">
-                  <th>
-                    <div className="avatar">
-                      <div className="mask mask-squircle h-12 w-12">
-                        <img
-                          src="https://img.daisyui.com/images/profile/demo/2@94.webp"
-                          alt="Avatar Tailwind CSS Component"
-                        />
+                {assets.map((asset) => (
+                  <tr className="text-secondary">
+                    <th key={asset._id}>
+                      <div className="avatar">
+                        <div className="mask mask-squircle h-12 w-12">
+                          <img
+                            src={asset.productImage}
+                            alt="Avatar Tailwind CSS Component"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </th>
-                  <td>
-                    <div className="flex items-center">
-                      <div>
-                        <div className="font-bold">Dells</div>
+                    </th>
+                    <td>
+                      <div className="flex items-center">
+                        <div>
+                          <div className="font-bold">{asset.productName}</div>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td>Returnable</td>
-                  <td>10</td>
-                  <td>10/12/2025</td>
-                  <td>
-                    <button className="btn border-secondary bg-transparent hover:bg-primary hover:text-base-200 duration-200 btn-xs sm:mr-2 mb-2 sm:mb-0">
-                      Edit
-                    </button>
-                    <button className="btn btn-ghost btn-xs border-secondary bg-transparent hover:bg-primary hover:text-base-200 duration-200">
-                      Delete
-                    </button>
-                  </td>
-                </tr>
+                    </td>
+                    <td>{asset.productType}</td>
+                    <td>{asset.productQuantity}</td>
+                    <td>{asset.addedDate}</td>
+                    <td>
+                      <button className="btn border-secondary bg-transparent hover:bg-primary hover:text-base-200 duration-200 btn-xs sm:mr-2 mb-2 sm:mb-0">
+                        Edit
+                      </button>
+                      <button className="btn btn-ghost btn-xs border-secondary bg-transparent hover:bg-primary hover:text-base-200 duration-200">
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
