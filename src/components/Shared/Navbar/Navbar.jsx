@@ -43,7 +43,7 @@ const Navbar = () => {
   const HrdrowdownLinks = (
     <>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
-        <Link to="/hr_dashbord/assetList">Asset List</Link>
+        <Link to="/hr_dashbord">Asset List</Link>
       </li>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
         <Link to="/hr_dashbord/addAsset">Add Asset</Link>

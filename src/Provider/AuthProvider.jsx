@@ -11,12 +11,14 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
+import useAxios from "../Hooks/useAxios";
 
 const auth = getAuth(app);
 export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const instance = useAxios();
 
   // signUp by email password functionality here
   const signUp = (email, password) => {
@@ -45,13 +47,20 @@ const AuthProvider = ({ children }) => {
   // authentication observer
   useEffect(() => {
     const unsubcribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
+      if (currentUser) {
+        instance.get(`/user/${currentUser.email}`).then((res) => {
+          setUser(res.data);
+          setLoading(false);
+        });
+      } else {
+        setUser(null);
+        setLoading(false);
+      }
     });
     return () => {
       unsubcribe();
     };
-  }, []);
+  }, [instance]);
 
   const authData = {
     user,
@@ -61,7 +70,7 @@ const AuthProvider = ({ children }) => {
     updateUserProfile,
     LogOut,
     SingIngoogle,
-    LogIn
+    LogIn,
   };
   return <AuthContext value={authData}>{children}</AuthContext>;
 };
