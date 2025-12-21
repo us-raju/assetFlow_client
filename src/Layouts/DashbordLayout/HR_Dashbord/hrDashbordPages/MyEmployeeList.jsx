@@ -6,7 +6,7 @@ const MyEmployeeList = () => {
       <div>
         <div className="mb-5">
           <h2 className="text-[18px] lg:text-3xl text-primary font-bold mb-5 text-center">
-           My Employee List
+            My Employee List
           </h2>
           <h3 className="text-[16px] lg:text-[18px] text-primary font-semibold mb-5 text-center">
             Employees Used:1/5
@@ -53,7 +53,6 @@ const MyEmployeeList = () => {
                     <button className="btn border-secondary bg-transparent hover:bg-primary hover:text-base-200 duration-200 btn-xs sm:mr-2 mb-2 sm:mb-0">
                       Remove
                     </button>
-                   
                   </td>
                 </tr>
               </tbody>

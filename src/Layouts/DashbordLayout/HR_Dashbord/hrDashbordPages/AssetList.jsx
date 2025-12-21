@@ -4,21 +4,28 @@ import useAuth from "../../../../Hooks/useAuth";
 import Loading from "../../../../components/Loading/Loading";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import { useQuery } from "@tanstack/react-query";
 
 const AssetList = () => {
-  const [assets, setAssets] = useState([]);
   const { loading } = useAuth();
   const assetModalRef = useRef();
   const { register, handleSubmit, reset } = useForm();
   const [productId, setProductId] = useState("");
 
   const instance = useAxios();
-  useEffect(() => {
-    instance.get("/asset").then((res) => {
-      const assetData = res.data;
-      setAssets(assetData);
-    });
-  }, [instance]);
+
+  const {
+    data: assets,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["request_Asset"],
+    queryFn: async () => {
+      const res = await instance.get("/asset");
+      return res.data;
+    },
+  });
+
   const assetModal = (id) => {
     assetModalRef.current.showModal();
     setProductId(id);
@@ -42,6 +49,7 @@ const AssetList = () => {
     instance
       .patch(`/asset/${productId}`, updatedData)
       .then((res) => {
+        refetch();
         Swal.fire({
           title: "asset Update Successfully",
           icon: "success",
@@ -75,6 +83,7 @@ const AssetList = () => {
       .then((result) => {
         if (result.isConfirmed) {
           instance.delete(`/asset/${id}`).then((res) => {
+            refetch();
             Swal.fire({
               title: "Deleted!",
               text: "Your Asset has been deleted.",
@@ -91,7 +100,7 @@ const AssetList = () => {
         });
       });
   };
-  if (loading) return <Loading></Loading>;
+  if (loading || isLoading) return <Loading></Loading>;
 
   return (
     <>

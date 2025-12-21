@@ -2,20 +2,108 @@ import React, { useEffect, useState } from "react";
 import Loading from "../../../../components/Loading/Loading";
 import useAuth from "../../../../Hooks/useAuth";
 import useAxios from "../../../../Hooks/useAxios";
+import Swal from "sweetalert2";
+import { useQuery } from "@tanstack/react-query";
 
 const AllRequest = () => {
   const { loading, user } = useAuth();
-  const [requestAssets, setRequestAssets] = useState([]);
+  // const [requestAssets, setRequestAssets] = useState([]);
   const instance = useAxios();
 
-  useEffect(() => {
-    if (!user) return;
-    instance.get(`/request?email=${user.email}`).then((res) => {
-      setRequestAssets(res.data);
-    });
-  }, [instance, user]);
+  const {
+    data: requestAssets,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["request_Asset", user?.email],
+    queryFn: async () => {
+      const res = await instance.get(`/request?email=${user.email}`);
+      return res.data;
+    },
+  });
 
-  if (loading) return <Loading></Loading>;
+  const handleAcceptRequest = (asset) => {
+    const update = {
+      requestStatus: "approved",
+    };
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "I Want to Accept!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        instance
+          .patch(`/request/${asset._id}`, update)
+          .then(() => {
+            Swal.fire({
+              title: "Accepted!",
+              text: "You Accept Asset Request.",
+              icon: "success",
+            });
+          })
+          .catch((err) => {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: err.message,
+            });
+          });
+      }
+    });
+
+    const employeeAffiliationsData = {
+      employeeEmail: asset.requesterEmail,
+      employeeName: asset.requesterName,
+      hrEmail: asset.hrEmail,
+      companyName: user.companyName,
+      companyLogo: user.companyLogo,
+      affiliationDate: new Date().toISOString().split("T")[0],
+      status: "active",
+    };
+    instance
+      .post("/employeeAffiliations", employeeAffiliationsData)
+      .then((res) => {
+        const response = res.data;
+      });
+  };
+  const handleRejectRequest = (id) => {
+    const update = {
+      requestStatus: "Rejected",
+    };
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "I Want to Reject!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        instance
+          .patch(`/request/${id}`, update)
+          .then(() => {
+            refetch();
+            Swal.fire({
+              title: "Rejected!",
+              text: "You Reject Asset Request.",
+              icon: "success",
+            });
+          })
+          .catch((err) => {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: err.message,
+            });
+          });
+      }
+    });
+  };
+
+  if (loading || isLoading) return <Loading></Loading>;
   return (
     <>
       <div>
@@ -52,10 +140,16 @@ const AllRequest = () => {
                       {asset.requestStatus}
                     </td>
                     <td>
-                      <button className="btn border-secondary bg-transparent hover:bg-success hover:text-base-200 duration-200 btn-xs sm:mr-2 mb-2 sm:mb-0">
+                      <button
+                        onClick={() => handleAcceptRequest(asset)}
+                        className="btn border-secondary bg-transparent hover:bg-success hover:text-base-200 duration-200 btn-xs sm:mr-2 mb-2 sm:mb-0"
+                      >
                         Accept
                       </button>
-                      <button className="btn btn-ghost btn-xs border-secondary bg-transparent hover:bg-warning hover:text-base-200 duration-200">
+                      <button
+                        onClick={() => handleRejectRequest(asset._id)}
+                        className="btn btn-ghost btn-xs border-secondary bg-transparent hover:bg-warning hover:text-base-200 duration-200"
+                      >
                         Reject
                       </button>
                     </td>

@@ -17,13 +17,13 @@ const RequestAsset = () => {
       setAssets(res.data);
     });
   }, [instance]);
-  if (loading) return <Loading></Loading>;
   const handleAssetRequest = (asset) => {
     setSelectedAsset(asset);
     setModal(true);
   };
   const handleFinalRequest = () => {
     const note = textareaRef.current.value;
+    if (note === "") return;
     const requestData = {
       assetId: selectedAsset._id,
       assetName: selectedAsset.productName,
@@ -49,7 +49,7 @@ const RequestAsset = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        setModal(false)
+        setModal(false);
       })
       .catch((err) => {
         const errMessage = err.message;
@@ -58,21 +58,24 @@ const RequestAsset = () => {
           icon: "error",
         });
       });
+    setSelectedAsset(null);
   };
+  if (loading) return <Loading></Loading>;
+
   return (
     <>
-      <section className="relative">
+      <section>
         <h2 className="text-[18px] lg:text-3xl text-primary font-bold mb-5 text-center">
           Request an Asset
         </h2>
-        <div className="cards_Container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="cards_Container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 ">
           {asstes.map((asset) => (
             <div
               key={asset._id}
-              className="card bg-[#f5f5f5] shadow-[0_20px_50px_rgba(8,112,184,0.3)]"
+              className="card bg-[#f5f5f5] shadow-[0_20px_50px_rgba(8,112,184,0.3)] relative"
             >
               <figure>
-                <img className="max-h-[260px]" src={asset.productImage} />
+                <img className="h-[260px]" src={asset.productImage} />
               </figure>
               <div className="p-5 pt-2">
                 <h3 className="text-[16px] lg:text-[18px] text-primary font-semibold">
@@ -104,41 +107,40 @@ const RequestAsset = () => {
                   </button>
                 </div>
               </div>
+              {/* modal  */}
+              {selectedAsset?._id === asset._id && (
+                <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] min-w-[350px] bg-[#f5f5f5] shadow-[0_20px_50px_rgba(8,112,184,0.3)] p-5 rounded-[10px] max-w-lg mx-auto ">
+                  <h3 className="mb-3 text-primary font-semibold text-center">
+                    {selectedAsset.productName}
+                  </h3>
+                  <textarea
+                    ref={textareaRef}
+                    required
+                    placeholder="Write a note for requesting product"
+                    className="textarea textarea-primary focus:outline-0 w-full text-secondary"
+                  ></textarea>
+                  <div className="text-end">
+                    <button
+                      onClick={handleFinalRequest}
+                      type="button"
+                      className="btn text-primary border-secondary bg-transparent hover:text-base-200 hover:bg-primary  mt-4 mr-5"
+                    >
+                      Submit
+                    </button>
+
+                    <button
+                      onClick={() => setSelectedAsset(null)}
+                      type="button"
+                      className="btn text-primary border-secondary bg-transparent hover:text-base-200 hover:bg-primary  mt-4"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
-        {/* modal  */}
-        {modal ? (
-          <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] min-w-[350px] bg-[#f5f5f5] shadow-[0_20px_50px_rgba(8,112,184,0.3)] p-5 rounded-[10px] max-w-lg mx-auto ">
-            <h3 className="mb-3 text-primary font-semibold text-center">
-              {selectedAsset.productName}
-            </h3>
-            <textarea
-              ref={textareaRef}
-              placeholder="Write a note for requesting product"
-              className="textarea textarea-primary focus:outline-0 w-full text-secondary"
-            ></textarea>
-            <div className="text-end">
-              <button
-                onClick={handleFinalRequest}
-                type="button"
-                className="btn text-primary border-secondary bg-transparent hover:text-base-200 hover:bg-primary  mt-4 mr-5"
-              >
-                Submit
-              </button>
-
-              <button
-                onClick={() => setModal(false)}
-                type="button"
-                className="btn text-primary border-secondary bg-transparent hover:text-base-200 hover:bg-primary  mt-4"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        ) : (
-          ""
-        )}
       </section>
     </>
   );
