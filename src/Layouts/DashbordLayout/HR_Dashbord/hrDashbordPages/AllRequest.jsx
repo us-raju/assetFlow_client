@@ -1,6 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Loading from "../../../../components/Loading/Loading";
+import useAuth from "../../../../Hooks/useAuth";
+import useAxios from "../../../../Hooks/useAxios";
 
 const AllRequest = () => {
+  const { loading, user } = useAuth();
+  const [requestAssets, setRequestAssets] = useState([]);
+  const instance = useAxios();
+
+  useEffect(() => {
+    if (!user) return;
+    instance.get(`/request?email=${user.email}`).then((res) => {
+      setRequestAssets(res.data);
+    });
+  }, [instance, user]);
+
+  if (loading) return <Loading></Loading>;
   return (
     <>
       <div>
@@ -21,30 +36,31 @@ const AllRequest = () => {
                 </tr>
               </thead>
               <tbody className="text-[12px] md:text-[16px]">
-                {/* row 1 */}
-                <tr className="text-secondary">
-                  <th>Tamzid</th>
-                  <td>
-                    <div>
+                {requestAssets.map((asset) => (
+                  <tr key={asset._id} className="text-secondary">
+                    <th>{asset.requesterName}</th>
+                    <td>
                       <div>
-                        <div className="font-bold">Dells</div>
+                        <div>
+                          <div className="font-bold">{asset.assetName}</div>
+                        </div>
                       </div>
-                    </div>
-                  </td>
+                    </td>
 
-                  <td>10/12/2025</td>
-                  <td className="text-yellow-500 rounded-[10px] py-1 ">
-                    Pending
-                  </td>
-                  <td>
-                    <button className="btn border-secondary bg-transparent hover:bg-success hover:text-base-200 duration-200 btn-xs sm:mr-2 mb-2 sm:mb-0">
-                      Accept
-                    </button>
-                    <button className="btn btn-ghost btn-xs border-secondary bg-transparent hover:bg-warning hover:text-base-200 duration-200">
-                      Reject
-                    </button>
-                  </td>
-                </tr>
+                    <td>{asset.requestDate}</td>
+                    <td className="text-yellow-500 rounded-[10px] py-1 ">
+                      {asset.requestStatus}
+                    </td>
+                    <td>
+                      <button className="btn border-secondary bg-transparent hover:bg-success hover:text-base-200 duration-200 btn-xs sm:mr-2 mb-2 sm:mb-0">
+                        Accept
+                      </button>
+                      <button className="btn btn-ghost btn-xs border-secondary bg-transparent hover:bg-warning hover:text-base-200 duration-200">
+                        Reject
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
