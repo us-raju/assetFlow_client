@@ -61,7 +61,8 @@ const AuthProvider = ({ children }) => {
       unsubcribe();
     };
   }, [instance]);
-
+  console.log("Auth loading:", loading);
+  console.log("User:", user);
   const authData = {
     user,
     setUser,

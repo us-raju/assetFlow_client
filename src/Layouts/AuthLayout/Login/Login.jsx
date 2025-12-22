@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaXmark } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
@@ -10,10 +10,12 @@ import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 const Login = () => {
   const [registrationLinkModal, setRegistrationLinkModal] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { SingIngoogle, LogIn, setUser } = useAuth();
+  const { SingIngoogle, LogIn, setUser, loading, user } = useAuth();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const instance = useAxios();
+
+
   const handleLogIn = (data) => {
     const email = data.email;
     const password = data.password;
@@ -27,6 +29,7 @@ const Login = () => {
           } else {
             navigate("/employee_dashbord");
           }
+         
         });
         Swal.fire({
           title: "LogIn Successfull",
