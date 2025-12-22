@@ -6,13 +6,13 @@ import Swal from "sweetalert2";
 
 const AddAsset = () => {
   const { user } = useAuth();
-  const { register, handleSubmit,reset } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const instance = useAxios();
   const handleAsset = (data) => {
     const productName = data.productName;
     const productImage = data.productImage;
     const productType = data.productType;
-    const productQuantity = data.productQuantity;
+    const productQuantity = Number(data.productQuantity);
     const hrEmail = user.email;
     const companyName = user.companyName;
     const assetInfo = {
@@ -35,7 +35,7 @@ const AddAsset = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        reset()
+        reset();
       })
       .catch((err) => {
         const errMessage = err.message;
@@ -44,8 +44,6 @@ const AddAsset = () => {
           icon: "error",
         });
       });
-
-    
   };
 
   return (

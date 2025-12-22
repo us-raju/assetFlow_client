@@ -23,9 +23,8 @@ const AllRequest = () => {
   });
 
   const handleAcceptRequest = (asset) => {
-    const update = {
-      requestStatus: "approved",
-    };
+    console.log(asset)
+
     Swal.fire({
       title: "Are you sure?",
       icon: "warning",
@@ -36,8 +35,9 @@ const AllRequest = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         instance
-          .patch(`/request/${asset._id}`, update)
+          .post (`/request/${asset._id}`, { assetId: asset.assetId })
           .then(() => {
+            refetch()
             Swal.fire({
               title: "Accepted!",
               text: "You Accept Asset Request.",
@@ -48,26 +48,13 @@ const AllRequest = () => {
             Swal.fire({
               icon: "error",
               title: "Oops...",
-              text: err.message,
+              text: err.response?.data?.message || err.message,
             });
           });
       }
     });
 
-    const employeeAffiliationsData = {
-      employeeEmail: asset.requesterEmail,
-      employeeName: asset.requesterName,
-      hrEmail: asset.hrEmail,
-      companyName: user.companyName,
-      companyLogo: user.companyLogo,
-      affiliationDate: new Date().toISOString().split("T")[0],
-      status: "active",
-    };
-    instance
-      .post("/employeeAffiliations", employeeAffiliationsData)
-      .then((res) => {
-        const response = res.data;
-      });
+
   };
   const handleRejectRequest = (id) => {
     const update = {

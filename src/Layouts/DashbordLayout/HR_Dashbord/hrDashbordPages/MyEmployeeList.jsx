@@ -1,6 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
+import useAxios from "../../../../Hooks/useAxios";
+import { useQuery } from "@tanstack/react-query";
+import useAuth from "../../../../Hooks/useAuth";
+import Loading from "../../../../components/Loading/Loading";
 
 const MyEmployeeList = () => {
+  const { user, loading } = useAuth();
+  const instance = useAxios();
+  // const [myEmployee, setMyEmployee] = useState([]);
+  const {
+    data: employee,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["request_Asset", user?.email],
+    queryFn: async () => {
+      const res = await instance.get(
+        `/myemployee?email=${user.email} & companyName=${user.companyName}`
+      );
+      return res.data;
+    },
+  });
+
+  if (loading || isLoading) return <Loading></Loading>;
+
   return (
     <>
       <div>
