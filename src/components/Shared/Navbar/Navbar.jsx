@@ -28,7 +28,9 @@ const Navbar = () => {
         });
       });
   };
+  console.log(user);
   if (loading) return <Loading></Loading>;
+  console.log(user);
   const links = (
     <>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
@@ -84,7 +86,6 @@ const Navbar = () => {
       </li>
     </>
   );
-console.log(user)
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="navbar-start">

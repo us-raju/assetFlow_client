@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Loading from "../../../../components/Loading/Loading";
 import useAuth from "../../../../Hooks/useAuth";
 import useAxios from "../../../../Hooks/useAxios";
@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const AllRequest = () => {
   const { loading, user } = useAuth();
-  // const [requestAssets, setRequestAssets] = useState([]);
+
   const instance = useAxios();
 
   const {
@@ -22,8 +22,24 @@ const AllRequest = () => {
     },
   });
 
+  // employee usage query
+  const { data: usage } = useQuery({
+    queryKey: ["employeeUsage", user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const res = await instance.get(`/employee-usage?email=${user.email}`);
+      return res.data;
+    },
+  });
+
   const handleAcceptRequest = (asset) => {
-    console.log(asset)
+    if (usage?.used >= usage?.max) {
+      return Swal.fire({
+        icon: "warning",
+        title: "Limit Reached",
+        text: "Employee limit exceeded. Upgrade your package.",
+      });
+    }
 
     Swal.fire({
       title: "Are you sure?",
@@ -35,9 +51,9 @@ const AllRequest = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         instance
-          .post (`/request/${asset._id}`, { assetId: asset.assetId })
+          .post(`/request/${asset._id}`, { assetId: asset.assetId })
           .then(() => {
-            refetch()
+            refetch();
             Swal.fire({
               title: "Accepted!",
               text: "You Accept Asset Request.",
@@ -53,8 +69,6 @@ const AllRequest = () => {
           });
       }
     });
-
-
   };
   const handleRejectRequest = (id) => {
     const update = {
@@ -91,6 +105,7 @@ const AllRequest = () => {
   };
 
   if (loading || isLoading) return <Loading></Loading>;
+
   return (
     <>
       <div>
@@ -98,6 +113,9 @@ const AllRequest = () => {
           <h2 className="text-[18px] lg:text-3xl text-primary font-bold mb-5 text-center">
             All Employee Request
           </h2>
+          {usage?.used >= usage?.max && (
+            <p className="text-warning text-center">Upgrade Your Subscription Pack For Accept Employee Request</p>
+          )}
           <div className="overflow-x-auto">
             <table className="table">
               {/* head */}
@@ -128,6 +146,7 @@ const AllRequest = () => {
                     </td>
                     <td>
                       <button
+                        disabled={usage?.used >= usage?.max}
                         onClick={() => handleAcceptRequest(asset)}
                         className="btn border-secondary bg-transparent hover:bg-success hover:text-base-200 duration-200 btn-xs sm:mr-2 mb-2 sm:mb-0"
                       >

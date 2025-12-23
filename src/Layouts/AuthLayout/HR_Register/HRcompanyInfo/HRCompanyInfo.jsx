@@ -12,48 +12,47 @@ const HRCompanyInfo = () => {
   const instance = useAxios();
   const navigate = useNavigate();
   if (loading) return <Loading></Loading>;
-  const handleHrRegistation = (data) => {
-    const displayName = user.displayName;
-    const email = user.email;
-    const photoURL = user.photoURL;
-    const role = data.role;
-    const companyName = data.companyName;
-    const companyLogo = data.companyLogo;
-    const packageLimit = data.packageLimit;
-    const currentEmployees = data.currentEmployees;
-    const subscription = data.subscription;
-    const dateOfBirth = data.dateOfBirth;
+  const handleHrRegistation = async (data) => {
+    try {
+      // const displayName = user.displayName;
+      const email = user.email;
+      // const photoURL = user.photoURL;
+      const role = data.role;
+      const companyName = data.companyName;
+      const companyLogo = data.companyLogo;
+      const packageLimit = data.packageLimit;
+      const currentEmployees = Number(data.currentEmployees);
+      const subscription = data.subscription;
+      const dateOfBirth = data.dateOfBirth;
 
-    const userData = {
-      displayName: displayName,
-      email: email,
-      role: role,
-      companyName: companyName,
-      companyLogo: companyLogo,
-      packageLimit: packageLimit,
-      currentEmployees: currentEmployees,
-      subscription: subscription,
-      dateOfBirth: dateOfBirth,
-      photoURL: photoURL,
-    };
-    setUser(userData);
-    Swal.fire({
-      title: "Registration",
-      icon: "success",
-      position: "top",
-      showConfirmButton: false,
-      timer: 1500,
-    });
-    navigate("/hr_dashbord");
-    instance
-      .post("/user", userData)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        const errMessage = err.message;
-        console.log(errMessage);
+      const userData = {
+        companyName: companyName,
+        companyLogo: companyLogo,
+        packageLimit: packageLimit,
+        currentEmployees: currentEmployees,
+        subscription: subscription,
+        dateOfBirth: dateOfBirth,
+        role: role,
+      };
+
+      await instance.patch(`/user/${email}`, userData);
+      const res = await instance.post("/login", { email });
+      setUser(res.data);
+      Swal.fire({
+        title: "Registration Successful",
+        icon: "success",
+        position: "top",
+        showConfirmButton: false,
+        timer: 1500,
       });
+
+      navigate("/hr_dashbord");
+    } catch (error) {
+      Swal.fire({
+        title: error.message,
+        icon: "error",
+      });
+    }
   };
 
   return (

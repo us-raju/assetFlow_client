@@ -54,15 +54,14 @@ const AuthProvider = ({ children }) => {
         });
       } else {
         setUser(null);
-        setLoading(false);
       }
+      setLoading(false);
     });
     return () => {
       unsubcribe();
     };
-  }, [instance]);
-  console.log("Auth loading:", loading);
-  console.log("User:", user);
+  }, []);
+
   const authData = {
     user,
     setUser,

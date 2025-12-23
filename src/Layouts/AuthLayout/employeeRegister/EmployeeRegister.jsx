@@ -17,91 +17,111 @@ const EmployeeRegister = () => {
   const navigate = useNavigate();
   const instance = useAxios();
 
-  const handleEmployeeRegistration = (data) => {
-    const displayName = data.fullName;
-    const email = data.email;
-    const role = data.role;
-    const dateOfBirth = data.dateOfBirth;
-    const photoURL = data.ProfileImage;
+  const handleEmployeeRegistration = async (data) => {
+    try {
+      const userCredential = await signUp(data.email, data.password);
+      const firebaseUser = userCredential.user;
+      const token = await firebaseUser.getIdToken();
+      localStorage.setItem("AccessToken", token);
 
-    signUp(data.email, data.password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        setUser(user);
-        const userData = {
-          displayName: displayName,
-          email: email,
-          role: role,
-          dateOfBirth: dateOfBirth,
-          photoURL: photoURL,
-        };
-        Swal.fire({
-          title: "Registration",
-          icon: "success",
-          position: "top",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        navigate("/employee_dashbord");
+      const userData = {
+        displayName: data.fullName,
+        email: data.email,
+        role: data.role,
+        dateOfBirth: data.dateOfBirth,
+        photoURL: data.ProfileImage,
+      };
 
-        instance
-          .post("/user", userData)
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => {
-            const errMessage = err.message;
-            console.log(errMessage);
-          });
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        Swal.fire({
-          title: errorMessage,
-          icon: "error",
-        });
+      await instance.post("/user", userData);
+
+      Swal.fire({
+        title: "Registration Successful",
+        icon: "success",
+        position: "top",
+        showConfirmButton: false,
+        timer: 1500,
       });
+
+      navigate("/employee_dashbord");
+    } catch (error) {
+      Swal.fire({
+        title: error.message,
+        icon: "error",
+      });
+    }
   };
 
-  const handleGoogleSignIn = () => {
-    const role = "employee";
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await SingIngoogle();
+      const user = result.user;
+      const token =await user.getIdToken();
+      localStorage.setItem("AccessToken", token);
 
-    SingIngoogle()
-      .then((result) => {
-        const user = result.user;
-        setUser(user);
-        const userData = {
-          ...user,
-          role: role,
-        };
-        Swal.fire({
-          title: "Registration",
-          icon: "success",
-          position: "top",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        navigate("/employee_dashbord");
-        instance
-          .post("/user", userData)
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => {
-            Swal.fire({
-              title: err.message,
-              icon: "error",
-              draggable: false,
-            });
-          });
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        Swal.fire({
-          title: errorMessage,
-          icon: "error",
-        });
+      const userData = {
+        displayName: user.displayName,
+        email: user.email,
+        dateOfBirth: null,
+        PhotoURL: user.photoURL,
+
+        role: "employee",
+      };
+
+      await instance.post("/user", userData);
+
+      const res = await instance.post("/login", {
+        email: user.email,
       });
+      setUser(res.data);
+
+      navigate("/employee_dashbord");
+
+      Swal.fire({
+        title: "Registration",
+        icon: "success",
+        position: "top",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      //  .then((result) => {
+      //     const user = result.user;
+      //     setUser(user);
+      //     const userData = {
+      //       disPlayName: user.displayName,
+      //       email: user.email,
+      //       dateOfBirth: null,
+      //       PhotoURL: user.PhotoURL,
+      //       role: "employee",
+      //     };
+
+      //   await  instance
+      //       .post("/user", userData)
+      //       .then((res) => {
+      //         Swal.fire({
+      //           title: "Registration",
+      //           icon: "success",
+      //           position: "top",
+      //           showConfirmButton: false,
+      //           timer: 1500,
+      //         });
+      //         navigate("/employee_dashbord");
+      //       })
+      //       .catch((err) => {
+      //         Swal.fire({
+      //           title: err.message,
+      //           icon: "error",
+      //           draggable: false,
+      //         });
+      //       });
+      //   });
+    } catch (error) {
+      const errorMessage = error.message;
+      Swal.fire({
+        title: errorMessage,
+        icon: "error",
+      });
+    }
   };
 
   return (

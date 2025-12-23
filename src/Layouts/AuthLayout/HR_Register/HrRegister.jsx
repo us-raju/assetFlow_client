@@ -22,7 +22,7 @@ const HrRegister = () => {
     const companyName = data.companyName;
     const companyLogo = data.companyLogo;
     const packageLimit = data.packageLimit;
-    const currentEmployees = data.currentEmployees;
+    const currentEmployees = Number(data.currentEmployees);
     const subscription = data.subscription;
     const dateOfBirth = data.dateOfBirth;
     const photoURL = data.ProfileImage;
@@ -40,17 +40,17 @@ const HrRegister = () => {
       photoURL: photoURL,
     };
     signUp(data.email, data.password)
-      .then(() => {
-        // const user = userCredential.user;
-        return instance.post("/user", userData);
+      .then(async (userCredential) => {
+        const user = userCredential.user;
+        const token = await user.getIdToken();
+        localStorage.setItem("AccessToken", token);
 
-        // setUser(userData);
+        return instance.post("/user", userData);
       })
       .then(() => {
         return instance.post("/login", { email: userData.email });
       })
       .then((res) => {
-   
         setUser(res.data);
 
         Swal.fire({
@@ -60,7 +60,6 @@ const HrRegister = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-
 
         navigate("/hr_dashbord");
       })
@@ -72,20 +71,53 @@ const HrRegister = () => {
       });
   };
 
-  const handleGoogleSignIn = () => {
-    SingIngoogle()
-      .then((result) => {
-        const user = result.user;
-        setUser(user);
-        navigate("/hrcompanyInfo");
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        Swal.fire({
-          title: errorMessage,
-          icon: "error",
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await SingIngoogle();
+      const firebaseUser = result.user;
+      const token = await firebaseUser.getIdToken();
+      localStorage.setItem("AccessToken", token);
+
+      let dbUser;
+
+      try {
+        const loginRes = await instance.post("/login", {
+          email: firebaseUser.email,
         });
+        dbUser = loginRes.data;
+      } catch (err) {
+        if (err.response?.status === 404) {
+          const userData = {
+            displayName: firebaseUser.displayName,
+            email: firebaseUser.email,
+            photoURL: firebaseUser.photoURL,
+          };
+
+          const createRes = await instance.post("/user", userData);
+          dbUser = userData; // use created user
+        } else if (err.response?.status === 400) {
+          const loginRes = await instance.post("/login", {
+            email: firebaseUser.email,
+          });
+          dbUser = loginRes.data;
+        } else {
+          throw err;
+        }
+      }
+
+      setUser(dbUser);
+
+      if (dbUser.role === "hr") {
+        navigate("/hr_dashbord");
+      } else {
+        navigate("/hrcompanyInfo");
+      }
+    } catch (error) {
+      Swal.fire({
+        title: error.message,
+        icon: "error",
       });
+    }
   };
 
   return (

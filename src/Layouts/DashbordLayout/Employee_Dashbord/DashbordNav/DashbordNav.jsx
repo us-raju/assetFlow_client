@@ -4,42 +4,78 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { LiaUsersSolid } from "react-icons/lia";
 import { LuPackage, LuPackagePlus } from "react-icons/lu";
 
-import { Link, Outlet } from "react-router";
+import { Link, Outlet, useNavigate } from "react-router";
+import Swal from "sweetalert2";
+import useAuth from "../../../../Hooks/useAuth";
 
 const DashbordNav = () => {
+  const { LogOut } = useAuth();
+  const navigate = useNavigate();
+  const handleHrLogOut = () => {
+    LogOut()
+      .then(() => {
+        Swal.fire({
+          title: "LogOut Successfull",
+          icon: "success",
+          position: "top",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate("/");
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        Swal.fire({
+          title: errorMessage,
+          icon: "error",
+          draggable: false,
+        });
+      });
+  };
   return (
     <>
       <div className="drawer lg:drawer-open">
         <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content">
           {/* Navbar */}
-          <nav className="navbar w-full  bg-base-100 shadow-sm">
-            <label
-              htmlFor="my-drawer-4"
-              aria-label="open sidebar"
-              className="btn btn-square btn-ghost"
-            >
-              {/* Sidebar toggle icon */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                strokeLinejoin="round"
-                strokeLinecap="round"
-                strokeWidth="2"
-                fill="none"
-                stroke="currentColor"
-                className="my-1.5 inline-block size-4"
+          <nav className="navbar w-full justify-between items-center bg-base-100 shadow-sm">
+            <div className="flex items-center">
+              <label
+                htmlFor="my-drawer-4"
+                aria-label="open sidebar"
+                className="btn btn-square btn-ghost"
               >
-                <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
-                <path d="M9 4v16"></path>
-                <path d="M14 10l2 2l-2 2"></path>
-              </svg>
-            </label>
+                {/* Sidebar toggle icon */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                  strokeWidth="2"
+                  fill="none"
+                  stroke="currentColor"
+                  className="my-1.5 inline-block size-4"
+                >
+                  <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
+                  <path d="M9 4v16"></path>
+                  <path d="M14 10l2 2l-2 2"></path>
+                </svg>
+              </label>
+              <div className="px-4">
+                {" "}
+                <Link className="text-primary text-2xl font-bold" to="/">
+                  AssetFlow
+                </Link>
+              </div>
+            </div>
             <div className="px-4">
-              {" "}
-              <Link className="text-primary text-2xl font-bold" to="/">
-                AssetFlow
-              </Link>
+              <button
+                className="hover:text-base-200 hover:bg-primary hover:rounded-[10px] px-4 py-1 border border-primary rounded-[10px] cursor-pointer font-medium"
+                onClick={handleHrLogOut}
+                type="button"
+              >
+                Logout
+              </button>
             </div>
           </nav>
           {/* Page content here */}

@@ -23,7 +23,7 @@ const MyEmployeeList = () => {
   });
 
   if (loading || isLoading) return <Loading></Loading>;
-  console.log(employees);
+
 
   return (
     <>

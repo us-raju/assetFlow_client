@@ -15,12 +15,15 @@ const Login = () => {
   const { register, handleSubmit } = useForm();
   const instance = useAxios();
 
-
   const handleLogIn = (data) => {
     const email = data.email;
     const password = data.password;
     LogIn(email, password)
-      .then((res) => {
+      .then(async (res) => {
+        const firebaseUser = res.user;
+        const token = await firebaseUser.getIdToken();
+        localStorage.setItem("AccessToken", token);
+
         instance.post("/login", { email }).then((res) => {
           const dbUser = res.data;
           setUser(dbUser);
@@ -29,7 +32,6 @@ const Login = () => {
           } else {
             navigate("/employee_dashbord");
           }
-         
         });
         Swal.fire({
           title: "LogIn Successfull",
@@ -62,7 +64,7 @@ const Login = () => {
           }
         });
         Swal.fire({
-          title: "Registration",
+          title: "Login",
           icon: "success",
           position: "top",
           showConfirmButton: false,
