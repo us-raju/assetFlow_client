@@ -1,8 +1,62 @@
 import React, { useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
+import useAuth from "../../../../Hooks/useAuth";
+import Swal from "sweetalert2";
+import useAxios from "../../../../Hooks/useAxios";
+import { useForm } from "react-hook-form";
 
 const EmProfile = () => {
   const [modalOpen, SetModalOpen] = useState(false);
+  const { user } = useAuth();
+  const instance = useAxios();
+  const { register, handleSubmit } = useForm();
+
+  const handleProfileUpdate = (data) => {
+    const updateData = {
+      displayName: data.name,
+      dateOfBirth: data.dateOfBirth,
+    };
+    instance
+      .patch(`/user/${user.email}`, updateData)
+      .then(() => {
+        Swal.fire({
+          title: "Profile Update Successful",
+          icon: "success",
+          position: "top",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })
+      .catch((err) => {
+        Swal.fire({
+          title: err.message,
+          icon: "error",
+        });
+      });
+  };
+  const handleProfileImage = (data) => {
+    const updateData = {
+      photoURL: data.photo,
+    };
+    instance
+      .patch(`/user/${user.email}`, updateData)
+      .then(() => {
+        SetModalOpen(false);
+        Swal.fire({
+          title: "Profile Photo Update Successful",
+          icon: "success",
+          position: "top",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })
+      .catch((err) => {
+        Swal.fire({
+          title: err.message,
+          icon: "error",
+        });
+      });
+  };
   return (
     <>
       <section>
@@ -13,7 +67,7 @@ const EmProfile = () => {
         <div className="bg-[#F5F5F5] shadow-[0_20px_50px_rgba(8,112,184,0.3)] flex flex-col md:flex-row items-center max-w-[500px] mx-auto rounded-[10px]">
           <div className="personalInfo w-full p-2 md:p-5 ">
             <div className="flex mb-5 relative">
-              <div className="w-[60px] h-[60px] mr-5">
+              <div className="w-[45px] h-[45px] mr-5">
                 {" "}
                 <span className="w-[45px] h-[45px] ">
                   <FaRegUserCircle size={45} />
@@ -35,8 +89,9 @@ const EmProfile = () => {
               </div>
               {modalOpen ? (
                 <div className="bg-base-200 text-right p-5 rounded-[10px] shadow-[0_20px_50px_rgba(8,112,184,0.3)] absolute top-0 left-0">
-                  <form>
+                  <form onSubmit={handleSubmit(handleProfileImage)}>
                     <input
+                      {...register("photo")}
                       type="url"
                       className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
                       placeholder="Profile Image Link(url)"
@@ -65,29 +120,33 @@ const EmProfile = () => {
                 Personal Information
               </h3>
               <div>
-                <div>
-                  <label className="label text-primary">Full Name</label>
-                  <br />
-                  <input
-                    type="text"
-                    defaultValue="Tamzid"
-                    className="input text-secondary outline-primary border-secondary  focus:border-none placeholder:text-secondary"
-                  />
-                </div>
-                <div>
-                  <label className="label text-primary">Date of Birth</label>
-                  <br />
-                  <input
-                    type="date"
-                    className="input text-secondary outline-primary border-secondary  focus:border-none "
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="btn text-primary border-secondary bg-transparent hover:text-base-200 hover:bg-primary  mt-4"
-                >
-                  Save Change
-                </button>
+                <form onSubmit={handleSubmit(handleProfileUpdate)}>
+                  <div>
+                    <label className="label text-primary">Full Name</label>
+                    <br />
+                    <input
+                      {...register("name")}
+                      type="text"
+                      defaultValue="Tamzid"
+                      className="input text-secondary outline-primary border-secondary  focus:border-none placeholder:text-secondary"
+                    />
+                  </div>
+                  <div>
+                    <label className="label text-primary">Date of Birth</label>
+                    <br />
+                    <input
+                      {...register("dateOfBirth")}
+                      type="date"
+                      className="input text-secondary outline-primary border-secondary  focus:border-none "
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="btn text-primary border-secondary bg-transparent hover:text-base-200 hover:bg-primary  mt-4"
+                  >
+                    Save Change
+                  </button>
+                </form>
               </div>
             </div>
           </div>

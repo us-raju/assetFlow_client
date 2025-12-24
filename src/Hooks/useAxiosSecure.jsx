@@ -7,11 +7,13 @@ const useAxiosSecure = () => {
   const axiosInstance = useAxios();
   const { user, LogOut } = useAuth();
   const navigate = useNavigate();
+  const accessToken = localStorage.getItem("AccessToken")
+  console.log(accessToken)
   useEffect(() => {
     // request interceptor
     const requestInterceptor = axiosInstance.interceptors.request.use(
       (config) => {
-        config.headers.authorization = `Bearer ${user.accessToken}`;
+        config.headers.authorization = `Bearer ${accessToken}`;
         return config;
       }
     );

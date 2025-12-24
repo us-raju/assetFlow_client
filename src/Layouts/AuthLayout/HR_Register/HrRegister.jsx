@@ -94,7 +94,7 @@ const HrRegister = () => {
           };
 
           const createRes = await instance.post("/user", userData);
-          dbUser = userData; // use created user
+          dbUser = userData; 
         } else if (err.response?.status === 400) {
           const loginRes = await instance.post("/login", {
             email: firebaseUser.email,
