@@ -11,6 +11,7 @@ const AssetList = () => {
   const assetModalRef = useRef();
   const { register, handleSubmit, reset } = useForm();
   const [productId, setProductId] = useState("");
+  const [search,setSearch]= useState("")
 
   const instance = useAxios();
 
@@ -100,6 +101,15 @@ const AssetList = () => {
         });
       });
   };
+
+  if(!assets) return <Loading></Loading>
+  const filtfilteredAssets = assets.filter((asset) => {
+    const matchesSearch = asset.productName
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    return matchesSearch;
+  });
   if (loading || isLoading) return <Loading></Loading>;
 
   return (
@@ -125,6 +135,7 @@ const AssetList = () => {
             </svg>
             <input
               type="search"
+              onChange={(e)=>setSearch(e.target.value)}
               className="text-secondary  placeholder:text-secondary"
               required
               placeholder="Search by asset name"
@@ -146,7 +157,7 @@ const AssetList = () => {
                 </tr>
               </thead>
               <tbody className="text-[12px] md:text-[16px]">
-                {assets.map((asset) => (
+                {filtfilteredAssets.map((asset) => (
                   <tr className="text-secondary">
                     <th key={asset._id}>
                       <div className="avatar">
