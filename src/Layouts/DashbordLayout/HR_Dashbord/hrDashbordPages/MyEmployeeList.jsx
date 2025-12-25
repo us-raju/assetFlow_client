@@ -3,19 +3,19 @@ import useAxios from "../../../../Hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../../Hooks/useAuth";
 import Loading from "../../../../components/Loading/Loading";
+import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 
 const MyEmployeeList = () => {
   const { user, loading } = useAuth();
-  const instance = useAxios();
-  // const [myEmployee, setMyEmployee] = useState([]);
+  // const instance = useAxios();
+  const instanceSecure = useAxiosSecure()
   const {
     data: employees,
     isLoading,
-    refetch,
   } = useQuery({
     queryKey: ["request_Asset", user?.email],
     queryFn: async () => {
-      const res = await instance.get(
+      const res = await instanceSecure.get(
         `/myemployee?email=${user.email}&companyName=${user.companyName}`
       );
       return res.data;
@@ -33,7 +33,7 @@ const MyEmployeeList = () => {
             My Employee List
           </h2>
           <h3 className="text-[16px] lg:text-[18px] text-primary font-semibold mb-5 text-center">
-            Employees Used:{employees.length}/5
+            Employees Used:{employees.length}/{user.packageLimit}
           </h3>
         </div>
         <div className="table_Container">

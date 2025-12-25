@@ -6,14 +6,15 @@ import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import useAxios from "../../../Hooks/useAxios";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const Login = () => {
   const [registrationLinkModal, setRegistrationLinkModal] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { SingIngoogle, LogIn, setUser, loading, user } = useAuth();
+  const { SingIngoogle, LogIn, setUser} = useAuth();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  const instance = useAxios();
+  const instanceSecure = useAxiosSecure();
 
   const handleLogIn = (data) => {
     const email = data.email;
@@ -24,7 +25,7 @@ const Login = () => {
         const token = await firebaseUser.getIdToken();
         localStorage.setItem("AccessToken", token);
 
-        instance.post("/login", { email }).then((res) => {
+        instanceSecure.post("/login", { email }).then((res) => {
           const dbUser = res.data;
           setUser(dbUser);
           if (dbUser.role === "hr") {
@@ -32,13 +33,14 @@ const Login = () => {
           } else {
             navigate("/employee_dashbord");
           }
-        });
-        Swal.fire({
-          title: "LogIn Successfull",
-          icon: "success",
-          position: "top",
-          showConfirmButton: false,
-          timer: 1500,
+
+          Swal.fire({
+            title: "LogIn Successfull",
+            icon: "success",
+            position: "top",
+            showConfirmButton: false,
+            timer: 1500,
+          });
         });
       })
       .catch((error) => {
@@ -54,7 +56,7 @@ const Login = () => {
       .then((result) => {
         const FirebaseUser = result.user;
         const email = FirebaseUser.email;
-        instance.post("/login", { email }).then((res) => {
+        instanceSecure.post("/login", { email }).then((res) => {
           const dbUser = res.data;
           setUser(dbUser);
           if (dbUser.role === "hr") {

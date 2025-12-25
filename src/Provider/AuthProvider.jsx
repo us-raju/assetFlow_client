@@ -27,21 +27,25 @@ const AuthProvider = ({ children }) => {
   };
   // Logout functionlity here
   const LogOut = () => {
+    setLoading(true);
     return signOut(auth);
   };
   // update profile
   const updateUserProfile = (updateData) => {
+    setLoading(true);
     return updateProfile(auth.currentUser, updateData);
   };
   // signin with google functionlity here
   const googleProvider = new GoogleAuthProvider();
   const SingIngoogle = () => {
+    setLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
 
   // Login functionlity here
 
   const LogIn = (email, password) => {
+    setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
   // authentication observer
@@ -54,8 +58,8 @@ const AuthProvider = ({ children }) => {
         });
       } else {
         setUser(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
     return () => {
       unsubcribe();

@@ -1,19 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
-import useAxios from "../../../../Hooks/useAxios";
+
 import useAuth from "../../../../Hooks/useAuth";
 import Loading from "../../../../components/Loading/Loading";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 
 const AssetList = () => {
-  const { loading } = useAuth();
+  const { loading, user } = useAuth();
   const assetModalRef = useRef();
   const { register, handleSubmit, reset } = useForm();
   const [productId, setProductId] = useState("");
-  const [search,setSearch]= useState("")
+  const [search, setSearch] = useState("");
 
-  const instance = useAxios();
+  const instanceSecure = useAxiosSecure();
+
 
   const {
     data: assets,
@@ -22,7 +24,7 @@ const AssetList = () => {
   } = useQuery({
     queryKey: ["request_Asset"],
     queryFn: async () => {
-      const res = await instance.get("/asset");
+      const res = await instanceSecure.get(`/asset/${user.email}`);
       return res.data;
     },
   });
@@ -47,7 +49,7 @@ const AssetList = () => {
       }
     });
 
-    instance
+    instanceSecure
       .patch(`/asset/${productId}`, updatedData)
       .then((res) => {
         refetch();
@@ -83,7 +85,7 @@ const AssetList = () => {
     })
       .then((result) => {
         if (result.isConfirmed) {
-          instance.delete(`/asset/${id}`).then((res) => {
+          instanceSecure.delete(`/asset/${id}`).then((res) => {
             refetch();
             Swal.fire({
               title: "Deleted!",
@@ -102,7 +104,7 @@ const AssetList = () => {
       });
   };
 
-  if(!assets) return <Loading></Loading>
+  if (!assets) return <Loading></Loading>;
   const filtfilteredAssets = assets.filter((asset) => {
     const matchesSearch = asset.productName
       .toLowerCase()
@@ -135,7 +137,7 @@ const AssetList = () => {
             </svg>
             <input
               type="search"
-              onChange={(e)=>setSearch(e.target.value)}
+              onChange={(e) => setSearch(e.target.value)}
               className="text-secondary  placeholder:text-secondary"
               required
               placeholder="Search by asset name"

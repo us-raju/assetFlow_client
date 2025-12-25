@@ -1,13 +1,13 @@
 import React from "react";
 import useAuth from "../../../../Hooks/useAuth";
 import { useForm } from "react-hook-form";
-import useAxios from "../../../../Hooks/useAxios";
+import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 
 const AddAsset = () => {
   const { user } = useAuth();
   const { register, handleSubmit, reset } = useForm();
-  const instance = useAxios();
+  const instanceSecure = useAxiosSecure()
   const handleAsset = (data) => {
     const productName = data.productName;
     const productImage = data.productImage;
@@ -25,7 +25,7 @@ const AddAsset = () => {
       addedDate: new Date().toISOString().split("T")[0],
     };
 
-    instance
+    instanceSecure
       .post("/asset", assetInfo)
       .then((res) => {
         Swal.fire({

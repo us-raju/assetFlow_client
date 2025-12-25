@@ -4,10 +4,11 @@ import useAuth from "../../../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import useAxios from "../../../../Hooks/useAxios";
 import { useForm } from "react-hook-form";
+import Loading from "../../../../components/Loading/Loading";
 
 const EmProfile = () => {
   const [modalOpen, SetModalOpen] = useState(false);
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const instance = useAxios();
   const { register, handleSubmit } = useForm();
 
@@ -57,6 +58,7 @@ const EmProfile = () => {
         });
       });
   };
+  if (loading) return <Loading></Loading>;
   return (
     <>
       <section>
@@ -68,10 +70,14 @@ const EmProfile = () => {
           <div className="personalInfo w-full p-2 md:p-5 ">
             <div className="flex mb-5 relative">
               <div className="w-[45px] h-[45px] mr-5">
-                {" "}
-                <span className="w-[45px] h-[45px] ">
-                  <FaRegUserCircle size={45} />
-                </span>
+                {user ? (
+                  <img className="w-full h-full" src={user.photoURL} alt="" />
+                ) : (
+                  <span className="w-full h-full ">
+                    <FaRegUserCircle size={45} />
+                  </span>
+                )}
+
                 <button
                   onClick={() => SetModalOpen(true)}
                   type="button"
@@ -80,7 +86,7 @@ const EmProfile = () => {
                   Update
                 </button>
               </div>
-              <div>
+              <div className="ml-5">
                 <h3 className="text-[16px] lg:text-[18px] text-primary font-semibold">
                   Tamzid
                 </h3>
