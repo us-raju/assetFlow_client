@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import useAxios from "../../../../Hooks/useAxios";
 import useAuth from "../../../../Hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
@@ -7,6 +7,10 @@ import Loading from "../../../../components/Loading/Loading";
 const MyAsset = () => {
   const { user } = useAuth();
   const instance = useAxios();
+  const [search, setSearch] = useState("");
+  const params = new URLSearchParams(location.search);
+  const selecteType = params.get("selected");
+  const [selected, setSelected] = useState(selecteType || "");
 
   const { data: employeeAssets, isLoading } = useQuery({
     queryKey: ["employeeAssets", user?.email],
@@ -15,6 +19,17 @@ const MyAsset = () => {
       const res = await instance.get(`/assetAssgin?email=${user.email}`);
       return res.data;
     },
+  });
+
+  if (!employeeAssets) return <Loading></Loading>;
+  const filteredAssets = employeeAssets.filter((asset) => {
+    const matchesSearch = asset.assetName
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    const matchesType = selected === "" || asset.assetType.toLowerCase() === selected.toLowerCase();
+
+    return matchesSearch && matchesType;
   });
   if (isLoading) return <Loading></Loading>;
 
@@ -45,13 +60,15 @@ const MyAsset = () => {
             </svg>
             <input
               type="search"
+              onChange={(e) => setSearch(e.target.value)}
               className="text-secondary  placeholder:text-secondary"
               required
               placeholder="Search"
             />
           </label>
           <select
-            defaultValue=""
+            value={selected}
+            onChange={(e) => setSelected(e.target.value)}
             className="select input border border-secondary outline-primary rounded-[10px]  mr-2 md:mr-0"
           >
             <option value="" disabled>
@@ -78,7 +95,7 @@ const MyAsset = () => {
                 </tr>
               </thead>
               <tbody className="text-[12px] md:text-[16px]">
-                {employeeAssets?.map((asset) => (
+                {filteredAssets?.map((asset) => (
                   <tr key={asset._id} className="text-secondary">
                     <th>
                       <div className="avatar">
