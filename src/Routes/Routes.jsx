@@ -19,6 +19,8 @@ import MyTeam from "../Layouts/DashbordLayout/Employee_Dashbord/EmployeeDashbord
 import EmProfile from "../Layouts/DashbordLayout/Employee_Dashbord/EmployeeDashbordPage/EmProfile";
 import PrivateRoute from "../Provider/PrivateRoute";
 import HRCompanyInfo from "../Layouts/AuthLayout/HR_Register/HRcompanyInfo/HRCompanyInfo";
+import Forbidden from "../components/Forbidden/Forbidden";
+import HrRoute from "../Provider/HrRoute";
 
 const router = createBrowserRouter([
   {
@@ -51,13 +53,19 @@ const router = createBrowserRouter([
         path: "/hrcompanyInfo",
         element: <HRCompanyInfo></HRCompanyInfo>,
       },
+      {
+        path: "/forbidden",
+        element: <Forbidden></Forbidden>
+      },
     ],
   },
   {
     path: "/hr_dashbord",
     element: (
       <PrivateRoute>
+        <HrRoute>
         <HR_Dashbord></HR_Dashbord>
+        </HrRoute>
       </PrivateRoute>
     ),
     children: [

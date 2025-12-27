@@ -35,7 +35,7 @@ const AllRequest = () => {
   const handleAcceptRequest = (asset) => {
     if (usage?.used >= usage?.max) {
       return Swal.fire({
-        icon: "warning",
+        icon: "info",
         title: "Limit Reached",
         text: "Employee limit exceeded. Upgrade your package.",
       });

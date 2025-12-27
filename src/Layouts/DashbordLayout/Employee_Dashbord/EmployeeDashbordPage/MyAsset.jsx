@@ -1,6 +1,23 @@
 import React from "react";
+import useAxios from "../../../../Hooks/useAxios";
+import useAuth from "../../../../Hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "../../../../components/Loading/Loading";
 
 const MyAsset = () => {
+  const { user } = useAuth();
+  const instance = useAxios();
+
+  const { data: employeeAssets, isLoading } = useQuery({
+    queryKey: ["employeeAssets", user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const res = await instance.get(`/assetAssgin?email=${user.email}`);
+      return res.data;
+    },
+  });
+  if (isLoading) return <Loading></Loading>;
+
   return (
     <>
       <section>
@@ -33,8 +50,13 @@ const MyAsset = () => {
               placeholder="Search"
             />
           </label>
-          <select defaultValue="" className="select input border border-secondary outline-primary rounded-[10px]  mr-2 md:mr-0">
-            <option value="" disabled>Asset Type</option>
+          <select
+            defaultValue=""
+            className="select input border border-secondary outline-primary rounded-[10px]  mr-2 md:mr-0"
+          >
+            <option value="" disabled>
+              Asset Type
+            </option>
             <option value="returnable">Returnable</option>
             <option value="non-returnable">Non-Returnable</option>
           </select>
@@ -56,36 +78,44 @@ const MyAsset = () => {
                 </tr>
               </thead>
               <tbody className="text-[12px] md:text-[16px]">
-                {/* row 1 */}
-                <tr className="text-secondary">
-                  <th>
-                    <div className="avatar">
-                      <div className="mask mask-squircle h-12 w-12">
-                        <img
-                          src="https://img.daisyui.com/images/profile/demo/2@94.webp"
-                          alt="Avatar Tailwind CSS Component"
-                        />
+                {employeeAssets?.map((asset) => (
+                  <tr key={asset._id} className="text-secondary">
+                    <th>
+                      <div className="avatar">
+                        <div className="mask mask-squircle h-12 w-12">
+                          <img src={asset.Image} />
+                        </div>
                       </div>
-                    </div>
-                  </th>
-                  <td>
-                    <div className="flex items-center">
-                      <div>
-                        <div className="font-bold">Dells</div>
+                    </th>
+                    <td>
+                      <div className="flex items-center">
+                        <div>
+                          <div className="font-bold">{asset.assetName}</div>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td>Returnable</td>
-                  <td>ACB CORP</td>
-                  <td>10/12/2025</td>
-                  <td>10/12/2025</td>
-                  <td className="text-success">Approved</td>
-                  <td>
-                    <button className="btn border-secondary bg-transparent hover:bg-primary hover:text-base-200 duration-200 btn-xs sm:mr-2 mb-2 sm:mb-0">
-                      Return
-                    </button>
-                  </td>
-                </tr>
+                    </td>
+                    <td>{asset.assetType}</td>
+                    <td>{asset.companyName}</td>
+                    <td>10/12/2025</td>
+                    <td>
+                      {
+                        new Date(asset.assignmentDate)
+                          .toISOString()
+                          .split("T")[0]
+                      }
+                    </td>
+                    <td className="text-success">Approved</td>
+                    <td>
+                      {asset.assetType === "Returnable" ? (
+                        <button className="btn border-secondary bg-transparent hover:bg-primary hover:text-base-200 duration-200 btn-xs sm:mr-2 mb-2 sm:mb-0">
+                          Return
+                        </button>
+                      ) : (
+                        ""
+                      )}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

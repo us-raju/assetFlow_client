@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FaXmark } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
-import useAxios from "../../../Hooks/useAxios";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const Login = () => {
   const [registrationLinkModal, setRegistrationLinkModal] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { SingIngoogle, LogIn, setUser} = useAuth();
+  const { SingIngoogle, LogIn, setUser } = useAuth();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const instanceSecure = useAxiosSecure();
@@ -53,9 +52,11 @@ const Login = () => {
   };
   const handleGoogleSignIn = () => {
     SingIngoogle()
-      .then((result) => {
+      .then(async (result) => {
         const FirebaseUser = result.user;
         const email = FirebaseUser.email;
+        const token = await FirebaseUser.getIdToken();
+        localStorage.setItem("AccessToken", token);
         instanceSecure.post("/login", { email }).then((res) => {
           const dbUser = res.data;
           setUser(dbUser);

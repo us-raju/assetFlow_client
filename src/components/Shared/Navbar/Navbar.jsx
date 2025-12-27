@@ -28,7 +28,7 @@ const Navbar = () => {
         });
       });
   };
-  console.log(user);
+
   if (loading) return <Loading></Loading>;
   console.log(user);
   const links = (
