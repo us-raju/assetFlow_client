@@ -172,7 +172,7 @@ const EmployeeRegister = () => {
               type="text"
               className="input text-secondary outline-primary border-secondary focus:border-none placeholder:text-secondary w-full"
               readOnly
-              value="Employee"
+              value="employee"
             />
             {/* date of birth  */}
             <label className="label text-primary font-semibold">

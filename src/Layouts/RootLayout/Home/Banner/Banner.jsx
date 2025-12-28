@@ -1,7 +1,26 @@
 import React from "react";
 import bannerImg from "../../../../assets/heroImgresize.jpg";
 import { easeInOut, motion } from "framer-motion";
+import useAuth from "../../../../Hooks/useAuth";
+import Loading from "../../../../components/Loading/Loading";
+import { Link, useNavigate } from "react-router";
 const Banner = () => {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+  if (loading) return <Loading></Loading>;
+  const hanldeNaviage = () => {
+    if (user) {
+      if (user.role === "hr") {
+        navigate("/hr_dashbord");
+      }
+      if (user.role === "employee") {
+        navigate("/employee_dashbord");
+      }
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <>
       <div
@@ -29,13 +48,16 @@ const Banner = () => {
           </motion.p>
 
           <div className="mt-5 flex flex-col  lg:flex-row sm:w-[150px] lg:w-full">
-            <button className="border border-secondary mb-3 lg:mb-0 lg:mr-5 py-1 px-2 lg:py-2 lg:px-4  rounded-[10px] text-[12px] text-primary lg:text-[18px] font-medium hover:bg-primary hover:text-base-200 rsor-pointer">
+            <Link
+              onClick={hanldeNaviage}
+              className="border border-secondary mb-3 lg:mb-0 lg:mr-5 py-1 px-2 lg:py-2 lg:px-4  rounded-[10px] text-[12px] text-primary lg:text-[18px] font-medium hover:bg-primary hover:text-base-200 rsor-pointer"
+            >
               Get Started
-            </button>
-       
-            <button className="border border-secondary py-1 px-2 lg:py-2 lg:px-4 rounded-[10px] text-[12px] text-primary lg:text-[18px] font-medium hover:bg-primary hover:text-base-200  cursor-pointer">
+            </Link>
+
+            <Link to="/hr_dashbord/upgradePackage" className="border border-secondary py-1 px-2 lg:py-2 lg:px-4 rounded-[10px] text-[12px] text-primary lg:text-[18px] font-medium hover:bg-primary hover:text-base-200  cursor-pointer">
               View Pricing
-            </button>
+            </Link>
           </div>
         </div>
       </div>

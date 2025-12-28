@@ -13,20 +13,24 @@ const AssetList = () => {
   const { register, handleSubmit, reset } = useForm();
   const [productId, setProductId] = useState("");
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(0);
+  const limit = 5;
+  const skip = page * limit;
 
   const instanceSecure = useAxiosSecure();
 
-  const {
-    data: assets,
-    isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["request_Asset"],
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["request_Asset", page],
     queryFn: async () => {
-      const res = await instanceSecure.get(`/asset/${user.email}`);
+      const res = await instanceSecure.get(
+        `/asset/${user.email}?limit=${limit}&skip=${skip}`
+      );
       return res.data;
     },
+    keepPreviousData: true,
   });
+  const assets = data?.assets ?? [];
+  const totalPages = data ? Math.ceil(data.totalCount / limit) : 0;
 
   const assetModal = (id) => {
     assetModalRef.current.showModal();
@@ -103,6 +107,7 @@ const AssetList = () => {
       });
   };
 
+  console.log(assets);
   if (!assets) return <Loading></Loading>;
   const filtfilteredAssets = assets.filter((asset) => {
     const matchesSearch = asset.productName
@@ -267,6 +272,27 @@ const AssetList = () => {
             </button>
           </form>
         </dialog>
+        <div className="pagination text-center mt-5">
+          <button
+            className="cursor-pointer mr-2 border border-primary px-2 hover:bg-primary hover:text-base-200"
+            onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
+            disabled={page === 0}
+          >
+            Previous
+          </button>
+
+          <span className="cursor-pointer border border-primary px-2 hover:bg-primary hover:text-base-200">
+            {page + 1}
+          </span>
+
+          <button
+            className="cursor-pointer ml-2 border border-primary px-2 hover:bg-primary hover:text-base-200"
+            onClick={() => setPage((prev) => prev + 1)}
+            disabled={page + 1 >= totalPages}
+          >
+            Next
+          </button>
+        </div>
       </section>
     </>
   );
