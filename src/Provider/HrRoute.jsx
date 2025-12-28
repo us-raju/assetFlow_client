@@ -8,7 +8,6 @@ const HrRoute = ({ children }) => {
   const location = useLocation();
   const { user, loading } = useAuth();
   if (loading) return <Loading></Loading>;
-  console.log("Current User:", user);
   if (user && user.role === "hr") {
     return children;
   }

@@ -16,7 +16,6 @@ const AssetList = () => {
 
   const instanceSecure = useAxiosSecure();
 
-
   const {
     data: assets,
     isLoading,
@@ -160,8 +159,8 @@ const AssetList = () => {
               </thead>
               <tbody className="text-[12px] md:text-[16px]">
                 {filtfilteredAssets.map((asset) => (
-                  <tr className="text-secondary">
-                    <th key={asset._id}>
+                  <tr key={asset._id} className="text-secondary">
+                    <th>
                       <div className="avatar">
                         <div className="mask mask-squircle h-12 w-12">
                           <img

@@ -30,7 +30,6 @@ const Navbar = () => {
   };
 
   if (loading) return <Loading></Loading>;
-  console.log(user);
   const links = (
     <>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
