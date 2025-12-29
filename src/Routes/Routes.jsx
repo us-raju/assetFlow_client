@@ -22,6 +22,9 @@ import HRCompanyInfo from "../Layouts/AuthLayout/HR_Register/HRcompanyInfo/HRCom
 import Forbidden from "../components/Forbidden/Forbidden";
 import HrRoute from "../Provider/HrRoute";
 
+import PaymentSuccess from "../Layouts/DashbordLayout/HR_Dashbord/hrDashbordPages/Payment/PaymentSuccess";
+import PaymentCancel from "../Layouts/DashbordLayout/HR_Dashbord/hrDashbordPages/Payment/PaymentCancel";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -55,7 +58,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/forbidden",
-        element: <Forbidden></Forbidden>
+        element: <Forbidden></Forbidden>,
       },
     ],
   },
@@ -64,7 +67,7 @@ const router = createBrowserRouter([
     element: (
       <PrivateRoute>
         <HrRoute>
-        <HR_Dashbord></HR_Dashbord>
+          <HR_Dashbord></HR_Dashbord>
         </HrRoute>
       </PrivateRoute>
     ),
@@ -92,6 +95,14 @@ const router = createBrowserRouter([
       {
         path: "/hr_dashbord/profile",
         element: <Profile></Profile>,
+      },
+      {
+        path: "/hr_dashbord/payment-success",
+        element: <PaymentSuccess></PaymentSuccess>,
+      },
+      {
+        path: "/hr_dashbord/payment-cancel",
+        element: <PaymentCancel></PaymentCancel>,
       },
     ],
   },

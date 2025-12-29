@@ -1,20 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FaRegArrowAltCircleRight, FaRegCheckCircle } from "react-icons/fa";
 import Loading from "../../../../components/Loading/Loading";
-import useAxios from "../../../../Hooks/useAxios";
+import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
+import { Link } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import useAuth from "../../../../Hooks/useAuth";
 
 const SubscriptionPackage = () => {
-  const [subPackage, setSubPackage] = useState();
-  const instance = useAxios();
+  const { user } = useAuth();
+  const instanceSecure = useAxiosSecure();
+  const { isLoading, data: subPackage } = useQuery({
+    queryFn: async () => {
+      const res = await instanceSecure.get("/subcriptionPackage");
+      return res.data;
+    },
+  });
 
-  useEffect(() => {
-    instance.get("/subcriptionPackage").then((data) => {
-      const packageData = data.data;
-      setSubPackage(packageData);
-    });
-  }, [instance]);
+  const handlePayment = async (data) => {
+    const paymentInfo = {
+      hrEmail: user.email,
+      packageName: data.name,
+      price: data.price,
+      employeeLimit: data.employeeLimit,
+      assetId: data._id,
+    };
+    console.log(paymentInfo);
+    const res = await instanceSecure.post(
+      "/create-checkout-session",
+      paymentInfo
+    );
 
-  if (!subPackage) return <Loading></Loading>;
+    // window.location.href = res.data.url;
+    window.location.assign(res.data.url);
+  };
+  console.log(user);
+  if (isLoading) return <Loading></Loading>;
   return (
     <>
       <div className="mt-20">
@@ -35,7 +55,10 @@ const SubscriptionPackage = () => {
                   ${data.price}
                 </ins>
                 <p className="text-secondary text-[12px] lg:text-[16px]">
-                  <FaRegArrowAltCircleRight size={16} className="inline-block mr-2 text-primary" />
+                  <FaRegArrowAltCircleRight
+                    size={16}
+                    className="inline-block mr-2 text-primary"
+                  />
                   employee limit: {data.employeeLimit}
                 </p>
 
@@ -53,8 +76,12 @@ const SubscriptionPackage = () => {
                   ))}
                 </ul>
 
-                <div className="text-center">
-                  <button className="border border-secondary py-1 px-2 lg:py-1 lg:px-4 rounded-[10px] text-[12px] lg:text-[18px] font-medium hover:bg-primary hover:text-base-200 cursor-pointer mt-3 ">
+                <div className="text-center mt-2">
+                  <button
+                    onClick={() => handlePayment(data)}
+                    // to={`/hr_dashbord/Payment/${data._id}`}
+                    className="border border-secondary py-1 px-2 lg:py-1 lg:px-4 rounded-[10px] text-[12px] lg:text-[18px] font-medium hover:bg-primary hover:text-base-200 cursor-pointer mt-3 "
+                  >
                     Buy Now
                   </button>
                 </div>
