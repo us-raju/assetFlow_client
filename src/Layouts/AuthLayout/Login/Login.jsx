@@ -183,13 +183,13 @@ const Login = () => {
             {registrationLinkModal ? (
               <div className="bg-[#f5f5f5] shadow-[0_20px_50px_rgba(8,112,184,0.3)] max-w-lg p-10 mx-auto rounded-[10px] mt-10 absolute top-[50%] ">
                 <Link
-                  to="/employeeRegister"
+                  to="/authLayout/employeeRegister"
                   className="block my-2 border border-secondary p-2 bg-transparent text-center hover:bg-primary hover:text-base-200 duration-200 rounded-[10px]"
                 >
                   Create an employee account
                 </Link>
                 <Link
-                  to="/hrRegister"
+                  to="/authLayout/hrRegister"
                   className="block my-2 border border-secondary p-2 bg-transparent text-center hover:bg-primary hover:text-base-200 duration-200 rounded-[10px]"
                 >
                   Create an HR account

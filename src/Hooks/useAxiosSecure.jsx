@@ -6,7 +6,7 @@ import axios from "axios";
 import Loading from "../components/Loading/Loading";
 
 const instance = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://asset-flow-server-chi.vercel.app",
 });
 const useAxiosSecure = () => {
   const { LogOut } = useAuth();
@@ -28,9 +28,9 @@ const useAxiosSecure = () => {
       (error) => {
         const statusCode = error.status;
         if (statusCode === 401 || statusCode === 403) {
-          LogOut().then(()=>{
-            navigate("/login")
-          })
+          LogOut().then(() => {
+            navigate("/login");
+          });
         }
 
         return Promise.reject(error);

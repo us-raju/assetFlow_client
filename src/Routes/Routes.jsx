@@ -24,11 +24,13 @@ import HrRoute from "../Provider/HrRoute";
 
 import PaymentSuccess from "../Layouts/DashbordLayout/HR_Dashbord/hrDashbordPages/Payment/PaymentSuccess";
 import PaymentCancel from "../Layouts/DashbordLayout/HR_Dashbord/hrDashbordPages/Payment/PaymentCancel";
+import ErrorPage from "../components/Shared/ErrorPage/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayout,
+    // errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
         index: true,
@@ -37,33 +39,35 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/",
+    path: "/authLayout",
     Component: AuthLayout,
+    errorElement: <ErrorPage></ErrorPage>,
     children: [
-      {
-        path: "/hrRegister",
-        element: <HrRegister></HrRegister>,
-      },
-      {
-        path: "/employeeRegister",
-        element: <EmployeeRegister></EmployeeRegister>,
-      },
-      {
-        path: "/login",
+       {
+        path: "login",
         element: <Login></Login>,
       },
       {
-        path: "/hrcompanyInfo",
+        path: "hrRegister",
+        element: <HrRegister></HrRegister>,
+      },
+      {
+        path: "employeeRegister",
+        element: <EmployeeRegister></EmployeeRegister>,
+      },
+     
+      {
+        path: "hrcompanyInfo",
         element: <HRCompanyInfo></HRCompanyInfo>,
       },
       {
-        path: "/forbidden",
+        path: "forbidden",
         element: <Forbidden></Forbidden>,
       },
     ],
   },
   {
-    path: "/hr_dashbord",
+    path: "hr_dashbord",
     element: (
       <PrivateRoute>
         <HrRoute>
@@ -71,62 +75,67 @@ const router = createBrowserRouter([
         </HrRoute>
       </PrivateRoute>
     ),
+    errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
-        path: "/hr_dashbord",
+        index:true,
         element: <AssetList></AssetList>,
       },
       {
-        path: "/hr_dashbord/addAsset",
+        path: "addAsset",
         element: <AddAsset></AddAsset>,
       },
       {
-        path: "/hr_dashbord/allRequest",
+        path: "allRequest",
         element: <AllRequest></AllRequest>,
       },
       {
-        path: "/hr_dashbord/myEmployeeList",
+        path: "myEmployeeList",
         element: <MyEmployeeList></MyEmployeeList>,
       },
       {
-        path: "/hr_dashbord/upgradePackage",
+        path: "upgradePackage",
         element: <UpgradePackage></UpgradePackage>,
       },
       {
-        path: "/hr_dashbord/profile",
+        path: "profile",
         element: <Profile></Profile>,
       },
       {
-        path: "/hr_dashbord/payment-success",
+        path: "payment-success",
         element: <PaymentSuccess></PaymentSuccess>,
       },
       {
-        path: "/hr_dashbord/payment-cancel",
+        path: "payment-cancel",
         element: <PaymentCancel></PaymentCancel>,
       },
     ],
   },
   {
-    path: "/employee_dashbord",
+    path: "employee_dashbord",
     Component: Employee_Dashbord,
     children: [
       {
-        path: "/employee_dashbord",
+        index:true,
         element: <MyAsset></MyAsset>,
       },
       {
-        path: "/employee_dashbord/requsetasset",
+        path: "requsetasset",
         element: <RequestAsset></RequestAsset>,
       },
       {
-        path: "/employee_dashbord/myteam",
+        path: "myteam",
         element: <MyTeam></MyTeam>,
       },
       {
-        path: "/employee_dashbord/emprofile",
+        path: "emprofile",
         element: <EmProfile></EmProfile>,
       },
     ],
+  },
+  {
+    path: "/*",
+    element: <ErrorPage></ErrorPage>,
   },
 ]);
 

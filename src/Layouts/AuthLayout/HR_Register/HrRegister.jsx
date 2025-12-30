@@ -320,7 +320,7 @@ const HrRegister = () => {
             </button>
             <p className="text-secondary">
               Already have an account?
-              <Link to="/login" className="text-blue-400">
+              <Link to="/authLayout/login" className="text-blue-400">
                 Login
               </Link>
             </p>

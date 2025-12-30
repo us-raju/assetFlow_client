@@ -17,7 +17,7 @@ const Banner = () => {
         navigate("/employee_dashbord");
       }
     } else {
-      navigate("/login");
+      navigate("/authLayout/login");
     }
   };
 

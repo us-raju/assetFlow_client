@@ -107,7 +107,6 @@ const AssetList = () => {
       });
   };
 
-  console.log(assets);
   if (!assets) return <Loading></Loading>;
   const filtfilteredAssets = assets.filter((asset) => {
     const matchesSearch = asset.productName

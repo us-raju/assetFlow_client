@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { FaRegUserCircle } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import Loading from "../../Loading/Loading";
 
 const Navbar = () => {
   const { user, loading, LogOut } = useAuth();
+  const naviage = useNavigate()
 
   const handleHrLogOut = () => {
     LogOut()
@@ -18,6 +19,7 @@ const Navbar = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+        naviage("/")
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -33,11 +35,11 @@ const Navbar = () => {
   const links = (
     <>
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
-        <Link to="/employeeRegister">Join as Employee</Link>
+        <Link to="/authLayout/employeeRegister">Join as Employee</Link>
       </li>
 
       <li className="hover:text-base-200 hover:bg-primary hover:rounded-[10px]">
-        <Link to="/hrRegister">Join as HR Manager </Link>
+        <Link to="/authLayout/hrRegister">Join as HR Manager </Link>
       </li>
     </>
   );

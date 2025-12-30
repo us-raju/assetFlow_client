@@ -55,7 +55,7 @@ const EmployeeRegister = () => {
     try {
       const result = await SingIngoogle();
       const user = result.user;
-      const token =await user.getIdToken();
+      const token = await user.getIdToken();
       localStorage.setItem("AccessToken", token);
 
       const userData = {
@@ -83,38 +83,6 @@ const EmployeeRegister = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-
-      //  .then((result) => {
-      //     const user = result.user;
-      //     setUser(user);
-      //     const userData = {
-      //       disPlayName: user.displayName,
-      //       email: user.email,
-      //       dateOfBirth: null,
-      //       PhotoURL: user.PhotoURL,
-      //       role: "employee",
-      //     };
-
-      //   await  instance
-      //       .post("/user", userData)
-      //       .then((res) => {
-      //         Swal.fire({
-      //           title: "Registration",
-      //           icon: "success",
-      //           position: "top",
-      //           showConfirmButton: false,
-      //           timer: 1500,
-      //         });
-      //         navigate("/employee_dashbord");
-      //       })
-      //       .catch((err) => {
-      //         Swal.fire({
-      //           title: err.message,
-      //           icon: "error",
-      //           draggable: false,
-      //         });
-      //       });
-      //   });
     } catch (error) {
       const errorMessage = error.message;
       Swal.fire({
@@ -270,7 +238,7 @@ const EmployeeRegister = () => {
             </button>
             <p className="text-secondary">
               Already have an account?
-              <Link to="/login" className="text-blue-400">
+              <Link to="/authLayout/login" className="text-blue-400">
                 Login
               </Link>
             </p>

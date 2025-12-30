@@ -1,10 +1,10 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL:"http://localhost:3000"
-})
+  baseURL: "https://asset-flow-server-chi.vercel.app",
+});
 
-const useAxios = ()=>{
-    return instance
-}
-export default useAxios
+const useAxios = () => {
+  return instance;
+};
+export default useAxios;
