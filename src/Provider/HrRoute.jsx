@@ -8,13 +8,17 @@ const HrRoute = ({ children }) => {
   const location = useLocation();
   const { user, loading } = useAuth();
   if (loading) return <Loading></Loading>;
-  if (user && user.role === "hr") {
-    return children;
+
+
+  if (!user) {
+    return <Navigate to="/" />;
   }
+
   if (user.role !== "hr") {
-    return <Forbidden></Forbidden>;
+    return <Navigate to="/authLayout/forbidden" replace />;
   }
-  return <Navigate to="/authLayout/login" state={location.pathname} />;
+
+  return children;
 };
 
 export default HrRoute;
