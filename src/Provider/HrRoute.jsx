@@ -14,7 +14,7 @@ const HrRoute = ({ children }) => {
   if (user.role !== "hr") {
     return <Forbidden></Forbidden>;
   }
-  return <Navigate to="/login" state={location.pathname} />;
+  return <Navigate to="/authLayout/login" state={location.pathname} />;
 };
 
 export default HrRoute;

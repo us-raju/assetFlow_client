@@ -21,7 +21,7 @@ const DashbordNav = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate("/");
+        navigate("/",{ replace: true });
       })
       .catch((error) => {
         const errorMessage = error.message;
