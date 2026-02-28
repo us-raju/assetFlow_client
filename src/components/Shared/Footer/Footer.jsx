@@ -10,17 +10,23 @@ const Footer = () => {
   const navigate = useNavigate();
   if (loading) return <Loading></Loading>;
   const GoDashbord = () => {
-    if (user.role === "hr") {
+    if (user?.role === "hr") {
       navigate("/hr_dashbord");
-    } else {
+    }
+    if (user?.role === "employee") {
       navigate("/employee_dashbord");
+    } else {
+      navigate("authLayout/login");
     }
   };
   const GoProfile = () => {
-    if (user.role === "hr") {
+    if (user?.role === "hr") {
       navigate("/hr_dashbord/profile");
-    } else {
+    }
+    if (user?.role === "employee") {
       navigate("/employee_dashbord/emprofile");
+    } else {
+      navigate("authLayout/login");
     }
   };
   return (
@@ -42,18 +48,18 @@ const Footer = () => {
             <h6 className="text-[16px] md:text-[18px] text-primary font-semibold">
               Quick Links
             </h6>
-            <Link to="/">Home</Link>
+            <Link to="/" className="hover:underline">Home</Link>
             <button
               onClick={GoDashbord}
               type="button"
-              className="cursor-pointer"
+              className="cursor-pointer hover:underline"
             >
               Dashbord
             </button>
             <button
               onClick={GoProfile}
               type="button"
-              className="cursor-pointer"
+              className="cursor-pointer hover:underline"
             >
               Profile
             </button>

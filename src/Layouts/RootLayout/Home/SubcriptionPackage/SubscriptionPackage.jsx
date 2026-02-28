@@ -24,7 +24,6 @@ const SubscriptionPackage = () => {
       employeeLimit: data.employeeLimit,
       assetId: data._id,
     };
-    console.log(paymentInfo);
     const res = await instanceSecure.post(
       "/create-checkout-session",
       paymentInfo
@@ -90,7 +89,7 @@ const SubscriptionPackage = () => {
                     >
                       Active Plan
                     </button>:<button
-                      disabled={"checkPurchased"}
+                      disabled={isPurchased}
                       onClick={() => handlePayment(data)}
                       // to={`/hr_dashbord/Payment/${data._id}`}
                       className="border border-secondary py-1 px-2 lg:py-1 lg:px-4 rounded-[10px] text-[12px] lg:text-[18px] font-medium hover:bg-primary hover:text-base-200 cursor-pointer mt-3 "

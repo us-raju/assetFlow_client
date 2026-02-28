@@ -68,7 +68,7 @@ const RequestAsset = () => {
         <h2 className="text-[18px] lg:text-3xl text-primary font-bold mb-5 text-center">
           Request an Asset
         </h2>
-        <div className="cards_Container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 ">
+        <div className="cards_Container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 ">
           {asstes.map((asset) => (
             <div
               key={asset._id}

@@ -17,7 +17,17 @@ const Banner = () => {
         navigate("/employee_dashbord");
       }
     } else {
-      navigate("/authLayout/login");
+      navigate("authLayout/login");
+    }
+  };
+
+  const handleViewPricing = () => {
+    if (user) {
+      if (user.role === "hr") {
+        navigate("/hr_dashbord/upgradePackage");
+      }
+    } else {
+      navigate("authLayout/login");
     }
   };
 
@@ -55,9 +65,16 @@ const Banner = () => {
               Get Started
             </Link>
 
-            <Link to="/hr_dashbord/upgradePackage" className="border border-secondary py-1 px-2 lg:py-2 lg:px-4 rounded-[10px] text-[12px] text-primary lg:text-[18px] font-medium hover:bg-primary hover:text-base-200  cursor-pointer">
-              View Pricing
-            </Link>
+            {user?.role === "hr" ? (
+              <Link
+                onClick={handleViewPricing}
+                className="border border-secondary py-1 px-2 lg:py-2 lg:px-4 rounded-[10px] text-[12px] text-primary lg:text-[18px] font-medium hover:bg-primary hover:text-base-200  cursor-pointer"
+              >
+                View Pricing
+              </Link>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>

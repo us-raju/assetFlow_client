@@ -39,7 +39,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/authLayout",
+    path: "authLayout",
     Component: AuthLayout,
     errorElement: <ErrorPage></ErrorPage>,
     children: [
