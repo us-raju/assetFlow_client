@@ -113,7 +113,7 @@ const AllRequest = () => {
           <h2 className="text-[18px] lg:text-3xl text-primary font-bold mb-5 text-center">
             All Employee Request
           </h2>
-         
+
           <div className="overflow-x-auto">
             <table className="table">
               {/* head */}
@@ -144,7 +144,6 @@ const AllRequest = () => {
                     </td>
                     <td>
                       <button
-                  
                         onClick={() => handleAcceptRequest(asset)}
                         className="btn border-secondary bg-transparent hover:bg-success hover:text-base-200 duration-200 btn-xs sm:mr-2 mb-2 sm:mb-0"
                       >

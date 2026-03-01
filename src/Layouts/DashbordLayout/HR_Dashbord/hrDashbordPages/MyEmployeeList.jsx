@@ -8,22 +8,18 @@ import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 const MyEmployeeList = () => {
   const { user, loading } = useAuth();
   // const instance = useAxios();
-  const instanceSecure = useAxiosSecure()
-  const {
-    data: employees,
-    isLoading,
-  } = useQuery({
+  const instanceSecure = useAxiosSecure();
+  const { data: employees, isLoading } = useQuery({
     queryKey: ["request_Asset", user?.email],
     queryFn: async () => {
       const res = await instanceSecure.get(
-        `/myemployee?email=${user.email}&companyName=${user.companyName}`
+        `/myemployee?email=${user.email}&companyName=${user.companyName}`,
       );
       return res.data;
     },
   });
 
   if (loading || isLoading) return <Loading></Loading>;
-
 
   return (
     <>
@@ -34,6 +30,7 @@ const MyEmployeeList = () => {
           </h2>
           <h3 className="text-[16px] lg:text-[18px] text-primary font-semibold mb-5 text-center">
             Employees Used:{employees.length}/{user.packageLimit}
+            {console.log(user.packageLimit)}
           </h3>
         </div>
         <div className="table_Container">
